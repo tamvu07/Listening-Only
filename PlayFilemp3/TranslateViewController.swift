@@ -30,7 +30,6 @@ class TranslateViewController: UIViewController {
         tableView.delegate = self
         scrollView.delegate = self
         tableView.tableFooterView = UIView()
-
         
     }
     

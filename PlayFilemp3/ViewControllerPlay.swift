@@ -28,6 +28,10 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     @IBOutlet weak var lbNameMusic: UILabel!
     @IBOutlet weak var constraintBottomViewBottom: NSLayoutConstraint!
     @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var viewToast: UIView!
+    @IBOutlet weak var lbToast: UILabel!
+    @IBOutlet weak var widthViewToast: NSLayoutConstraint!
+    
     
     var flag0: Bool = false
     var flagMain: Bool = false
@@ -84,20 +88,18 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
                   player = try AVAudioPlayer(contentsOf: url)
                     player.delegate =  self
                     sldtime.maximumValue = Float(player.duration)
-                    lbStart.text = String(format: "%2.2f", self.player.currentTime)
-                    lbEnd.text = String(format: "%2.2f", self.player.duration)
+                    lbStart.text = String(Int(self.player.currentTime))
+                    lbEnd.text =  String(Int(self.player.duration))
 
                     Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { (time) in
-                        if self.player.currentTime == self.player.duration {
+                        if self.player.currentTime  == self.player.duration {
                             self.flagMain = false
                             self.player.stop()
                         }
                         if self.flag0 == true {
                             
                             self.sldtime.value = Float(self.player.currentTime)
-        //                    let b = String(format: "%2.2f", self.player.currentTime)
-        //                    let a = String(format: "%2.2f", self.y)
-                            let a = Int(self.player.currentTime)
+                            let a = Int(self.player.currentTime )
                             let b = Int(self.y)
                             if  a == b {
                                 self.player.stop()
@@ -106,7 +108,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
                             }
                         }
                         self.sldtime.value = Float(self.player.currentTime)
-                        self.lbStart.text = String(format: "%2.2f", self.player.currentTime)
+                        self.lbStart.text = String(Int(self.player.currentTime))
                     }
                     player.volume = 0.5
                 }catch {
@@ -220,22 +222,22 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
             }
 
             if txtStart.text == "" {
-                 print("error text empty")
+                 popUp(vct: self,v: viewToast, lb: lbToast, msg: "Fill out time start", withView: widthViewToast)
                 return
             }
             
             if txtEnd.text == "" {
-                 print("error text empty")
+                 popUp(vct: self,v: viewToast, lb: lbToast, msg: "Fill out time end", withView: widthViewToast)
                 return
             }
             
             guard let x1 = Int(txtStart.text!) else {
-                print("error text 1")
+                 popUp(vct: self,v: viewToast, lb: lbToast, msg: "Number must type Integer", withView: widthViewToast)
                 return
             }
             
             guard let y1 = Int(txtEnd.text!) else {
-                print("error text 2")
+                popUp(vct: self,v: viewToast, lb: lbToast, msg: "Number must type Integer", withView: widthViewToast)
                 return
             }
 

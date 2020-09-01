@@ -10,6 +10,8 @@
 		17410B9EB7032C3D95215EA2 /* Pods_PlayFilemp3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DB2232F03795222CFE16CD8 /* Pods_PlayFilemp3.framework */; };
 		93A3BE4924F9A5F800B649D7 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3BE4824F9A5F800B649D7 /* extension.swift */; };
 		93A3BE4B24F9BB0800B649D7 /* database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3BE4A24F9BB0800B649D7 /* database.swift */; };
+		E51D6B2324FCED3A00C2FDB7 /* Pulsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D6B2224FCED3A00C2FDB7 /* Pulsing.swift */; };
+		E51D6B2524FD0CFB00C2FDB7 /* Test 01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E51D6B2424FD0CFB00C2FDB7 /* Test 01.mp3 */; };
 		E534259724F8DDA6004F8C0D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E534259624F8DDA6004F8C0D /* AppState.swift */; };
 		E534259924F8DE15004F8C0D /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E534259824F8DE15004F8C0D /* Actions.swift */; };
 		E534259B24F8DEA6004F8C0D /* Reducers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E534259A24F8DEA6004F8C0D /* Reducers.swift */; };
@@ -42,6 +44,8 @@
 		93A3BE4824F9A5F800B649D7 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 		93A3BE4A24F9BB0800B649D7 /* database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = database.swift; sourceTree = "<group>"; };
 		AD3DF12963F04E50ABA3767A /* Pods-PlayFilemp3.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayFilemp3.debug.xcconfig"; path = "Target Support Files/Pods-PlayFilemp3/Pods-PlayFilemp3.debug.xcconfig"; sourceTree = "<group>"; };
+		E51D6B2224FCED3A00C2FDB7 /* Pulsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pulsing.swift; sourceTree = "<group>"; };
+		E51D6B2424FD0CFB00C2FDB7 /* Test 01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Test 01.mp3"; sourceTree = "<group>"; };
 		E534259624F8DDA6004F8C0D /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		E534259824F8DE15004F8C0D /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 		E534259A24F8DEA6004F8C0D /* Reducers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducers.swift; sourceTree = "<group>"; };
@@ -99,6 +103,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		E51D6B2124FCECE400C2FDB7 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				E51D6B2224FCED3A00C2FDB7 /* Pulsing.swift */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		E55EE6FB24F645C100B28740 = {
 			isa = PBXGroup;
 			children = (
@@ -120,6 +132,7 @@
 		E55EE70624F645C100B28740 /* PlayFilemp3 */ = {
 			isa = PBXGroup;
 			children = (
+				E51D6B2124FCECE400C2FDB7 /* Animations */,
 				E5625C9E24F8DCF400490F34 /* Actions */,
 				E5625C9D24F8DCE200490F34 /* AppState */,
 				E5625C9C24F8DCCC00490F34 /* Reducers */,
@@ -178,6 +191,7 @@
 				E53425A624F905AC004F8C0D /* 053 Track053.mp3 */,
 				E53425AC24F905EE004F8C0D /* 054 Track054.mp3 */,
 				E53425AA24F905E3004F8C0D /* 055 Track055.mp3 */,
+				E51D6B2424FD0CFB00C2FDB7 /* Test 01.mp3 */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -285,6 +299,7 @@
 				E53425A924F905BC004F8C0D /* 052 Track052.mp3 in Resources */,
 				E55EE72824F677F200B28740 /* 080 Track080.mp3 in Resources */,
 				E53425A324F9057C004F8C0D /* 050 Track050.mp3 in Resources */,
+				E51D6B2524FD0CFB00C2FDB7 /* Test 01.mp3 in Resources */,
 				E53425A524F90585004F8C0D /* 051 Track051.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -348,6 +363,7 @@
 				E534259F24F8EDF0004F8C0D /* ListAllViewController.swift in Sources */,
 				93A3BE4B24F9BB0800B649D7 /* database.swift in Sources */,
 				E5611B2B24F8AEFC00D8D5F6 /* cellTranslate.swift in Sources */,
+				E51D6B2324FCED3A00C2FDB7 /* Pulsing.swift in Sources */,
 				E5611B2924F8ADCD00D8D5F6 /* TranslateViewController.swift in Sources */,
 				E55EE71F24F647DF00B28740 /* ListMusic.swift in Sources */,
 				E534259D24F8EDC8004F8C0D /* cellListAll.swift in Sources */,

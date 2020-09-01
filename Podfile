@@ -7,5 +7,4 @@ target 'PlayFilemp3' do
 
   # Pods for PlayFilemp3
   pod 'ReSwift'
-
 end
