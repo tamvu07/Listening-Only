@@ -11,7 +11,10 @@ import UIKit
 class ListAllViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-   
+    @IBOutlet weak var viewBottom: UIView!
+    
+    @IBOutlet weak var AvatarImage: UIImageView!
+    
     var arrayAllData: [mp3] = []
      weak var IDUpdateDelegate: IDProtocol? = nil
     var IDNext:Int?
@@ -23,10 +26,16 @@ class ListAllViewController: UIViewController {
         tableView.tableFooterView = UIView()
         arrayAllData =  ListMusic().getAllData()
         
-
-
+        AvatarImage.isUserInteractionEnabled = true
         
-
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ListAllViewController.addPulse))
+        tapGestureRecognizer.numberOfTouchesRequired  = 1
+        AvatarImage.addGestureRecognizer(tapGestureRecognizer)
+        
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (time) in
+            self.addPulse()
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,8 +46,13 @@ class ListAllViewController: UIViewController {
         IDUpdateDelegate?.updateID(IDUpdate: IDNext!)
     }
 
-
-
+    @objc func addPulse() {
+        let pulse = Pulsing(numberOfPulses: 2, radius: 50, position: AvatarImage.center)
+        pulse.animationDuration = 0.8
+        pulse.backgroundColor = UIColor.white.cgColor
+        self.viewBottom.layer.insertSublayer(pulse, at: UInt32(AvatarImage.animationDuration))
+    }
+    
 }
  
 extension ListAllViewController: UITableViewDelegate {
