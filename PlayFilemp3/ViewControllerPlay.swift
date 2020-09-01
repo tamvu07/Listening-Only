@@ -31,6 +31,9 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     @IBOutlet weak var viewToast: UIView!
     @IBOutlet weak var lbToast: UILabel!
     @IBOutlet weak var widthViewToast: NSLayoutConstraint!
+    @IBOutlet weak var ViewPersonListen: UIView!
+    @IBOutlet weak var imagePersonListen: UIImageView!
+    
     
     
     var flag0: Bool = false
@@ -60,10 +63,22 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
          } catch {
              print("Failed to set audio session category.")
          }
+        
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { (time) in
+            self.addPulse()
+        }
+        
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "updateVolume"), object: nil)
+    }
+    
+    @objc func addPulse() {
+        let pulse = Pulsing(numberOfPulses: 1, radius: 60, position: imagePersonListen.center)
+        pulse.animationDuration = 0.8
+         pulse.backgroundColor = #colorLiteral(red: 0.7956557274, green: 0.8827135563, blue: 0.957783401, alpha: 1)
+        self.ViewPersonListen.layer.insertSublayer(pulse, below: imagePersonListen.layer)
     }
     
     @objc func updateVolume(_ notification: NSNotification) {
@@ -188,12 +203,16 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
             let keyBoarRect = frame?.cgRectValue
             if let keyBoardHeight = keyBoarRect?.height {
                 self.constraintBottomViewBottom.constant = -keyBoardHeight
+                viewTranslate.isHidden = true
+                ViewPersonListen.isHidden = false
             }
         }
     }
     
     @objc func handKeyboardNotificationHide(notification: Notification){
         self.constraintBottomViewBottom.constant = 0
+        viewTranslate.isHidden = false
+        ViewPersonListen.isHidden = true
     }
     
     @IBAction func btOnClickPlayMain(_ sender: Any) {
@@ -241,6 +260,21 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
                 return
             }
 
+            if (x1 > Int(self.player.duration))  {
+                popUp(vct: self,v: viewToast, lb: lbToast, msg: "Time Start not exists", withView: widthViewToast)
+                return
+            }
+            
+            if (y1 > Int(self.player.duration))  {
+                popUp(vct: self,v: viewToast, lb: lbToast, msg: "Time END not exists", withView: widthViewToast)
+                return
+            }
+        
+            if (y1 < x1)  {
+                popUp(vct: self,v: viewToast, lb: lbToast, msg: "Time END must > Time Start", withView: widthViewToast)
+                return
+            }
+            
             if btPlay0.isSelected {
                 btPlay0.isSelected = false
                 player.pause()
