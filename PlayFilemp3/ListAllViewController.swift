@@ -5,6 +5,9 @@
 //  Created by Vu Minh Tam on 8/28/20.
 //  Copyright © 2020 Vu Minh Tam. All rights reserved.
 //
+// UIFileSharingEnabled
+//  LSSupportsOpeningDocumentsInPlace
+
 
 import UIKit
 
@@ -24,8 +27,9 @@ class ListAllViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         getListMP3()
-        arrayAllData =  ListMusic().getAllData()
-        print("ar : \(arrayAllData)")
+
+        
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
@@ -49,35 +53,78 @@ class ListAllViewController: UIViewController {
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
 
         do {
-            // Get the directory contents urls (including subfolders urls)
             let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil)
-
-            // if you want to filter the directory contents you can do like this:
             let mp3Files = directoryContents.filter{ $0.pathExtension == "mp3" }
+            print("mp3 urls:",mp3Files)
+            let mp3FileNames = mp3Files.map{ $0.deletingPathExtension().lastPathComponent }
+            print("mp3 list:", mp3FileNames)
             if mp3Files.count == 0 {
                 ViewEmpty.isHidden = false
                 return
             }else {
                 ViewEmpty.isHidden = true
             }
-            print("mp3 urls:",mp3Files)
-            let mp3FileNames = mp3Files.map{ $0.deletingPathExtension().lastPathComponent }
-            print("mp3 list:", mp3FileNames)
             
-            for i in 0..<mp3Files.count {
-                let urlString = "\(mp3Files[i])"
-                let pathURL = URL(string: urlString)!
-                var databaseInitals =  DatabaseInital.init(url: pathURL.path ,
-                                                           name: mp3FileNames[i],
-                                                           text: "abc*123*ggg*",
-                                                           audio: "9-0*2-4*4-8*")
-
-                database.shareInstance.arrDB.append(databaseInitals)
+            
+            if DatabaseManager.shareInstance.getDataFromDB() == false {
+                for i in 0..<mp3FileNames.count {
+                    let urlString = "\(mp3Files[i])"
+                    let pathURL = URL(string: urlString)!
+                    DatabaseManager.shareInstance.addData(url: pathURL.path, name: mp3FileNames[i], text: "", audio: "")
+                }
+                if DatabaseManager.shareInstance.getDataFromDB() == true {
+                    arrayAllData =  ListMusic().getAllData()
+                }
+            }else {
+               let DB = DatabaseManager.shareInstance.getDataRealmIntial()
+                for i in 0..<mp3FileNames.count {
+                    let urlString = "\(mp3Files[i])"
+                    let pathURL = URL(string: urlString)!
+                    
+                    if DB[i].name == mp3FileNames[i] {
+                        let data = DatabaseInital()
+                        data.url = pathURL.path
+                        data.name = mp3FileNames[i]
+                        data.text = ""
+                        data.audio = ""
+                        DatabaseManager.shareInstance.updateToDB(object: data)
+                    }
+                    if DatabaseManager.shareInstance.getDataFromDB() == true {
+                        arrayAllData =  ListMusic().getAllData()
+                    }
+                }
             }
             
             
-            
 
+            
+            
+            
+           /* if ( UserDefaults.standard.bool(forKey: "listMp3") ){
+                for i in 0..<mp3FileNames.count {
+                    let urlString = "\(mp3Files[i])"
+                    let pathURL = URL(string: urlString)!
+                    let data = DatabaseInital()
+                    data.ID = i + 1
+                    data.url = pathURL.path
+                    data.name = mp3FileNames[i]
+                    data.text = ""
+                    data.audio = ""
+                    DatabaseManager.shareInstance.updateToDB(object: data)
+                }
+                DatabaseManager.shareInstance.getDataFromDB()
+                arrayAllData =  ListMusic().getAllData()
+            }else {
+                for i in 0..<mp3FileNames.count {
+                    let urlString = "\(mp3Files[i])"
+                    let pathURL = URL(string: urlString)!
+                    DatabaseManager.shareInstance.addData(ID: i + 1, url: pathURL.path, name: mp3FileNames[i], text: "", audio: "")
+                }
+                UserDefaults.standard.set(true, forKey: "listMp3")
+                DatabaseManager.shareInstance.getDataFromDB()
+                arrayAllData =  ListMusic().getAllData()
+            }
+            */
         } catch {
             print(error)
         }

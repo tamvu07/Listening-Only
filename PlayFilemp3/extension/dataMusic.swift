@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 struct  Mp3 {
     var ID: Int
@@ -36,18 +37,16 @@ struct SentenceOfPhrase {
 }
 
 
-struct DatabaseInital {
-    var url: String
-    var name: String
-    var text: String
-    var audio: String
+class DatabaseInital: Object {
+    @objc dynamic var url: String = ""
+    @objc dynamic var name: String = ""
+    @objc dynamic var text: String = ""
+    @objc dynamic var audio: String = ""
     
-    init(url : String , name : String , text : String , audio : String) {
-        self.url = url
-        self.name = name
-        self.text = text
-        self.audio = audio
-    }
+    
+//    override static func primaryKey() -> String? {
+//        return "name"
+//    }
     
 }
 

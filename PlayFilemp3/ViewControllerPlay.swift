@@ -119,7 +119,12 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
 //            print(error)
 //        }
         
-        urlMp3 =  URL(fileURLWithPath: sentenceOfPhrase.url!) 
+        
+
+        
+        
+        urlMp3 =  URL(fileURLWithPath: sentenceOfPhrase.url!)
+        
                 do{
                     player = try AVAudioPlayer(contentsOf: urlMp3!)
                     player.delegate =  self

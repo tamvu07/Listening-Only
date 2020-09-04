@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gso-Mj-P86">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gso-Mj-P86">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -561,11 +561,18 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XVX-D7-PbV" userLabel="V2">
                                         <rect key="frame" x="394" y="0.0" width="394" height="554"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yxC-jp-KWr">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yxC-jp-KWr" userLabel="ViewText">
                                                 <rect key="frame" x="10" y="10" width="354" height="534"/>
                                                 <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4YV-jT-Wbi" userLabel="ViewEdit">
+                                                        <rect key="frame" x="0.0" y="0.0" width="354" height="20"/>
+                                                        <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="20" id="uPp-2O-FJY"/>
+                                                        </constraints>
+                                                    </view>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="sY5-xT-QLZ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="354" height="534"/>
+                                                        <rect key="frame" x="0.0" y="20" width="354" height="514"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                         <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -575,10 +582,14 @@
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <constraints>
-                                                    <constraint firstItem="sY5-xT-QLZ" firstAttribute="top" secondItem="yxC-jp-KWr" secondAttribute="top" id="5ze-wa-srt"/>
+                                                    <constraint firstItem="sY5-xT-QLZ" firstAttribute="top" secondItem="4YV-jT-Wbi" secondAttribute="bottom" id="5ze-wa-srt"/>
                                                     <constraint firstAttribute="bottom" secondItem="sY5-xT-QLZ" secondAttribute="bottom" id="DgA-Lc-2pc"/>
+                                                    <constraint firstAttribute="trailing" secondItem="4YV-jT-Wbi" secondAttribute="trailing" id="Vsc-E2-lOH"/>
+                                                    <constraint firstItem="4YV-jT-Wbi" firstAttribute="top" secondItem="yxC-jp-KWr" secondAttribute="top" id="Zld-kE-I35"/>
+                                                    <constraint firstItem="4YV-jT-Wbi" firstAttribute="leading" secondItem="yxC-jp-KWr" secondAttribute="leading" id="cVj-An-g2b"/>
                                                     <constraint firstAttribute="trailing" secondItem="sY5-xT-QLZ" secondAttribute="trailing" id="eOT-tD-nUF"/>
                                                     <constraint firstItem="sY5-xT-QLZ" firstAttribute="leading" secondItem="yxC-jp-KWr" secondAttribute="leading" id="y3t-gI-4Q1"/>
+                                                    <constraint firstItem="sY5-xT-QLZ" firstAttribute="top" secondItem="4YV-jT-Wbi" secondAttribute="bottom" id="yk2-7m-JQf"/>
                                                 </constraints>
                                             </view>
                                         </subviews>

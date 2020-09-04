@@ -24,26 +24,30 @@ class ListMusic {
 
     var arrayMp3:[Mp3]  = []
     
-    init() {
-        arrayMp3 = getArrayMp3()
-    }
+//    init() {
+//        if  DatabaseManager.shareInstance.arrDB.count != 0 {
+//            arrayMp3 = getArrayMp3()
+//        }
+//
+//    }
     
-    func getArrayMp3() -> [Mp3]{
-        let a = database.shareInstance.arrDB
-        var b: [Mp3] = []
-        for i in 0..<a.count {
-            let d = Sentence(sentence: a[i].text, timeAudio: a[i].audio)
-            let c = Mp3(ID: i + 1,url: a[i].url, Name: a[i].name, audio: d)
-            b.append(c)
-        }
-        return b
-    }
+//    func getArrayMp3(){
+//        let a = DatabaseManager.shareInstance.arrDB
+//        var b: [Mp3] = []
+//        for i in 0..<a!.count {
+//            let d = Sentence(sentence: a![i].text, timeAudio: a![i].audio)
+//            let c = Mp3(ID: a![i].ID, url: a![i].url, Name: a![i].name, audio: d)
+//            b.append(c)
+//        }
+//        arrayMp3 = b
+//    }
     
     func getdataOneMusic(ID: Int) -> SentenceOfPhrase {
+        let arr = getAllData()
         var data: SentenceOfPhrase = SentenceOfPhrase(url: "",name: "", text: "", phrase: [], secondAudio: [])
         data.url = getURLMusic(ID: ID)
         data.name = getNameMusic(ID: ID)
-        for (_, value) in arrayMp3.enumerated()
+        for (_, value) in arr.enumerated()
         {
             if ID == value.ID {
                 var strSentence = value.audio.sentence
@@ -88,17 +92,31 @@ class ListMusic {
         return data
     }
     
-    func getAllData() -> [Mp3] {
-        var arrayData: [Mp3] = []
-        for i in 0..<arrayMp3.count {
-            let mp3F = Mp3(ID: arrayMp3[i].ID ,url: arrayMp3[i].url, Name: arrayMp3[i].Name, audio: Sentence(sentence: arrayMp3[i].audio.sentence, timeAudio: arrayMp3[i].audio.timeAudio))
-            arrayData.append(mp3F)
+//    func getAllData() -> [Mp3] {
+//        var arrayData: [Mp3] = []
+//        for i in 0..<arrayMp3.count {
+//            let mp3F = Mp3(ID: arrayMp3[i].ID ,url: arrayMp3[i].url, Name: arrayMp3[i].Name, audio: Sentence(sentence: arrayMp3[i].audio.sentence, timeAudio: arrayMp3[i].audio.timeAudio))
+//            arrayData.append(mp3F)
+//        }
+//        return arrayData
+//    }
+    
+ 
+    
+    func getAllData() -> [Mp3]{
+        let a = DatabaseManager.shareInstance.arrDB
+        var b: [Mp3] = []
+        for i in 0..<a!.count {
+            let d = Sentence(sentence: a![i].text, timeAudio: a![i].audio)
+            let c = Mp3(ID: i + 1, url: a![i].url, Name: a![i].name, audio: d)
+            b.append(c)
         }
-        return arrayData
+        return  b
     }
     
     func getURLMusic(ID: Int) -> String {
-        if let index = arrayMp3.first(where: { (item) -> Bool in
+        let arr = getAllData()
+        if let index = arr.first(where: { (item) -> Bool in
             item.ID == ID
         }) {
             return index.url
@@ -109,7 +127,8 @@ class ListMusic {
     }
     
     func getNameMusic(ID: Int) -> String {
-        if let index = arrayMp3.first(where: { (item) -> Bool in
+        let arr = getAllData()
+        if let index = arr.first(where: { (item) -> Bool in
             item.ID == ID
         }) {
             return index.Name
