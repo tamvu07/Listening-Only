@@ -14,17 +14,22 @@ class ListAllViewController: UIViewController {
     @IBOutlet weak var viewBottom: UIView!
     
     @IBOutlet weak var AvatarImage: UIImageView!
+    @IBOutlet weak var ViewEmpty: UIView!
     
-    var arrayAllData: [mp3] = []
+    
+    var arrayAllData: [Mp3] = []
      weak var IDUpdateDelegate: IDProtocol? = nil
     var IDNext:Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getListMP3()
+        arrayAllData =  ListMusic().getAllData()
+        print("ar : \(arrayAllData)")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
-        arrayAllData =  ListMusic().getAllData()
+        
         
         AvatarImage.isUserInteractionEnabled = true
         
@@ -37,6 +42,49 @@ class ListAllViewController: UIViewController {
         }
         
     }
+    
+    func getListMP3() {
+
+
+        let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+
+        do {
+            // Get the directory contents urls (including subfolders urls)
+            let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil)
+
+            // if you want to filter the directory contents you can do like this:
+            let mp3Files = directoryContents.filter{ $0.pathExtension == "mp3" }
+            if mp3Files.count == 0 {
+                ViewEmpty.isHidden = false
+                return
+            }else {
+                ViewEmpty.isHidden = true
+            }
+            print("mp3 urls:",mp3Files)
+            let mp3FileNames = mp3Files.map{ $0.deletingPathExtension().lastPathComponent }
+            print("mp3 list:", mp3FileNames)
+            
+            for i in 0..<mp3Files.count {
+                let urlString = "\(mp3Files[i])"
+                let pathURL = URL(string: urlString)!
+                var databaseInitals =  DatabaseInital.init(url: pathURL.path ,
+                                                           name: mp3FileNames[i],
+                                                           text: "abc*123*ggg*",
+                                                           audio: "9-0*2-4*4-8*")
+
+                database.shareInstance.arrDB.append(databaseInitals)
+            }
+            
+            
+            
+
+        } catch {
+            print(error)
+        }
+    }
+    
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
@@ -91,5 +139,6 @@ extension ListAllViewController: UITableViewDataSource {
     
     
 }
+
 
 

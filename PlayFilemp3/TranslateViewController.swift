@@ -19,7 +19,7 @@ class TranslateViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var scrollView: UIScrollView!
     var ID:Int = 0
-    var sentenceOfPhrase: sentenceOfPhrase?
+    var sentenceOfPhrase: SentenceOfPhrase?
    
     @IBOutlet weak var sldVolume: UISlider!
     

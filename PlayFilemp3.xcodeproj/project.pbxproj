@@ -11,19 +11,11 @@
 		93A3BE4924F9A5F800B649D7 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3BE4824F9A5F800B649D7 /* extension.swift */; };
 		93A3BE4B24F9BB0800B649D7 /* database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3BE4A24F9BB0800B649D7 /* database.swift */; };
 		E51D6B2324FCED3A00C2FDB7 /* Pulsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D6B2224FCED3A00C2FDB7 /* Pulsing.swift */; };
-		E51D6B2524FD0CFB00C2FDB7 /* Test 01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E51D6B2424FD0CFB00C2FDB7 /* Test 01.mp3 */; };
 		E534259724F8DDA6004F8C0D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E534259624F8DDA6004F8C0D /* AppState.swift */; };
 		E534259924F8DE15004F8C0D /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E534259824F8DE15004F8C0D /* Actions.swift */; };
 		E534259B24F8DEA6004F8C0D /* Reducers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E534259A24F8DEA6004F8C0D /* Reducers.swift */; };
 		E534259D24F8EDC8004F8C0D /* cellListAll.swift in Sources */ = {isa = PBXBuildFile; fileRef = E534259C24F8EDC8004F8C0D /* cellListAll.swift */; };
 		E534259F24F8EDF0004F8C0D /* ListAllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E534259E24F8EDF0004F8C0D /* ListAllViewController.swift */; };
-		E53425A124F90465004F8C0D /* 049 Track049.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E53425A024F90465004F8C0D /* 049 Track049.mp3 */; };
-		E53425A324F9057C004F8C0D /* 050 Track050.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E53425A224F9057C004F8C0D /* 050 Track050.mp3 */; };
-		E53425A524F90585004F8C0D /* 051 Track051.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E53425A424F90585004F8C0D /* 051 Track051.mp3 */; };
-		E53425A724F905AC004F8C0D /* 053 Track053.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E53425A624F905AC004F8C0D /* 053 Track053.mp3 */; };
-		E53425A924F905BC004F8C0D /* 052 Track052.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E53425A824F905BC004F8C0D /* 052 Track052.mp3 */; };
-		E53425AB24F905E3004F8C0D /* 055 Track055.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E53425AA24F905E3004F8C0D /* 055 Track055.mp3 */; };
-		E53425AD24F905EE004F8C0D /* 054 Track054.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E53425AC24F905EE004F8C0D /* 054 Track054.mp3 */; };
 		E55EE70824F645C100B28740 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55EE70724F645C100B28740 /* AppDelegate.swift */; };
 		E55EE70A24F645C100B28740 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55EE70924F645C100B28740 /* SceneDelegate.swift */; };
 		E55EE70C24F645C100B28740 /* ViewControllerPlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55EE70B24F645C100B28740 /* ViewControllerPlay.swift */; };
@@ -33,7 +25,6 @@
 		E55EE71F24F647DF00B28740 /* ListMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55EE71E24F647DF00B28740 /* ListMusic.swift */; };
 		E55EE72224F6490000B28740 /* dataMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55EE72124F6490000B28740 /* dataMusic.swift */; };
 		E55EE72524F64C4500B28740 /* ManagerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55EE72424F64C4500B28740 /* ManagerData.swift */; };
-		E55EE72824F677F200B28740 /* 080 Track080.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E55EE72724F677F200B28740 /* 080 Track080.mp3 */; };
 		E5611B2924F8ADCD00D8D5F6 /* TranslateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5611B2824F8ADCD00D8D5F6 /* TranslateViewController.swift */; };
 		E5611B2B24F8AEFC00D8D5F6 /* cellTranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5611B2A24F8AEFC00D8D5F6 /* cellTranslate.swift */; };
 /* End PBXBuildFile section */
@@ -45,19 +36,11 @@
 		93A3BE4A24F9BB0800B649D7 /* database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = database.swift; sourceTree = "<group>"; };
 		AD3DF12963F04E50ABA3767A /* Pods-PlayFilemp3.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayFilemp3.debug.xcconfig"; path = "Target Support Files/Pods-PlayFilemp3/Pods-PlayFilemp3.debug.xcconfig"; sourceTree = "<group>"; };
 		E51D6B2224FCED3A00C2FDB7 /* Pulsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pulsing.swift; sourceTree = "<group>"; };
-		E51D6B2424FD0CFB00C2FDB7 /* Test 01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Test 01.mp3"; sourceTree = "<group>"; };
 		E534259624F8DDA6004F8C0D /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		E534259824F8DE15004F8C0D /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 		E534259A24F8DEA6004F8C0D /* Reducers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducers.swift; sourceTree = "<group>"; };
 		E534259C24F8EDC8004F8C0D /* cellListAll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cellListAll.swift; sourceTree = "<group>"; };
 		E534259E24F8EDF0004F8C0D /* ListAllViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAllViewController.swift; sourceTree = "<group>"; };
-		E53425A024F90465004F8C0D /* 049 Track049.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "049 Track049.mp3"; sourceTree = "<group>"; };
-		E53425A224F9057C004F8C0D /* 050 Track050.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "050 Track050.mp3"; sourceTree = "<group>"; };
-		E53425A424F90585004F8C0D /* 051 Track051.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "051 Track051.mp3"; sourceTree = "<group>"; };
-		E53425A624F905AC004F8C0D /* 053 Track053.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "053 Track053.mp3"; sourceTree = "<group>"; };
-		E53425A824F905BC004F8C0D /* 052 Track052.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "052 Track052.mp3"; sourceTree = "<group>"; };
-		E53425AA24F905E3004F8C0D /* 055 Track055.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "055 Track055.mp3"; sourceTree = "<group>"; };
-		E53425AC24F905EE004F8C0D /* 054 Track054.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "054 Track054.mp3"; sourceTree = "<group>"; };
 		E55EE70424F645C100B28740 /* Tam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E55EE70724F645C100B28740 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E55EE70924F645C100B28740 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -69,7 +52,6 @@
 		E55EE71E24F647DF00B28740 /* ListMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMusic.swift; sourceTree = "<group>"; };
 		E55EE72124F6490000B28740 /* dataMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dataMusic.swift; sourceTree = "<group>"; };
 		E55EE72424F64C4500B28740 /* ManagerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerData.swift; sourceTree = "<group>"; };
-		E55EE72724F677F200B28740 /* 080 Track080.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "080 Track080.mp3"; sourceTree = "<group>"; };
 		E5611B2824F8ADCD00D8D5F6 /* TranslateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateViewController.swift; sourceTree = "<group>"; };
 		E5611B2A24F8AEFC00D8D5F6 /* cellTranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cellTranslate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -183,15 +165,6 @@
 		E55EE72624F6775900B28740 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				E55EE72724F677F200B28740 /* 080 Track080.mp3 */,
-				E53425A024F90465004F8C0D /* 049 Track049.mp3 */,
-				E53425A224F9057C004F8C0D /* 050 Track050.mp3 */,
-				E53425A424F90585004F8C0D /* 051 Track051.mp3 */,
-				E53425A824F905BC004F8C0D /* 052 Track052.mp3 */,
-				E53425A624F905AC004F8C0D /* 053 Track053.mp3 */,
-				E53425AC24F905EE004F8C0D /* 054 Track054.mp3 */,
-				E53425AA24F905E3004F8C0D /* 055 Track055.mp3 */,
-				E51D6B2424FD0CFB00C2FDB7 /* Test 01.mp3 */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -290,17 +263,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E55EE71424F645C700B28740 /* LaunchScreen.storyboard in Resources */,
-				E53425AB24F905E3004F8C0D /* 055 Track055.mp3 in Resources */,
-				E53425A124F90465004F8C0D /* 049 Track049.mp3 in Resources */,
 				E55EE71124F645C700B28740 /* Assets.xcassets in Resources */,
-				E53425AD24F905EE004F8C0D /* 054 Track054.mp3 in Resources */,
-				E53425A724F905AC004F8C0D /* 053 Track053.mp3 in Resources */,
 				E55EE70F24F645C100B28740 /* Main.storyboard in Resources */,
-				E53425A924F905BC004F8C0D /* 052 Track052.mp3 in Resources */,
-				E55EE72824F677F200B28740 /* 080 Track080.mp3 in Resources */,
-				E53425A324F9057C004F8C0D /* 050 Track050.mp3 in Resources */,
-				E51D6B2524FD0CFB00C2FDB7 /* Test 01.mp3 in Resources */,
-				E53425A524F90585004F8C0D /* 051 Track051.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

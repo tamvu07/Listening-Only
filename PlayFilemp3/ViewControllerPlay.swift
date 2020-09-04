@@ -41,6 +41,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     var x:Int = 0
     var y:Int = 0
     var ID:Int?
+    var urlMp3: URL?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,10 +98,30 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         
         let sentenceOfPhrase = ListMusic().getdataOneMusic(ID: ID!)
         
-        let path:String = Bundle.main.path(forResource: sentenceOfPhrase.name, ofType: ".mp3")!
-                let url:URL = URL(fileURLWithPath: path)
+//        let path:String = Bundle.main.path(forResource: sentenceOfPhrase.name, ofType: ".mp3")!
+//                let url:URL = URL(fileURLWithPath: path)
+        
+//        let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+//
+//        do {
+//            // Get the directory contents urls (including subfolders urls)
+//            let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil)
+//            print(directoryContents)
+//
+//            // if you want to filter the directory contents you can do like this:
+//            let mp3Files = directoryContents.filter{ $0.pathExtension == "mp3" }
+//            urlMp3 = mp3Files[2]
+//            print("mp3 urls:",mp3Files)
+//            let mp3FileNames = mp3Files.map{ $0.deletingPathExtension().lastPathComponent }
+//            print("mp3 list:", mp3FileNames)
+//
+//        } catch {
+//            print(error)
+//        }
+        
+        urlMp3 =  URL(fileURLWithPath: sentenceOfPhrase.url!) 
                 do{
-                  player = try AVAudioPlayer(contentsOf: url)
+                    player = try AVAudioPlayer(contentsOf: urlMp3!)
                     player.delegate =  self
                     sldtime.maximumValue = Float(player.duration)
                     lbStart.text = String(Int(self.player.currentTime))

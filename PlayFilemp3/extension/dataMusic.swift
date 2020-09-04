@@ -8,16 +8,17 @@
 
 import Foundation
 
-struct  mp3 {
+struct  Mp3 {
     var ID: Int
+    var url: String
     var Name: String
-    var audio: sentence
+    var audio: Sentence
 }
 
 //struct phrase {
 //    var phrase: [sentence]
 //}
-struct sentence {
+struct Sentence {
     var sentence: String
     var timeAudio: String
 }
@@ -26,7 +27,8 @@ struct sentence {
 //    var sentenceOfPhrase: [sentenceOfPhrase]
 //}
 
-struct sentenceOfPhrase {
+struct SentenceOfPhrase {
+    var url: String?
     var name: String?
     var text: String?
     var phrase:[String]
@@ -34,8 +36,19 @@ struct sentenceOfPhrase {
 }
 
 
-struct databaseInital {
+struct DatabaseInital {
+    var url: String
     var name: String
     var text: String
     var audio: String
+    
+    init(url : String , name : String , text : String , audio : String) {
+        self.url = url
+        self.name = name
+        self.text = text
+        self.audio = audio
+    }
+    
 }
+
+
