@@ -4,7 +4,7 @@
 //
 //  Created by Vu Minh Tam on 8/28/20.
 //  Copyright © 2020 Vu Minh Tam. All rights reserved.
-//
+//nhap
 
 import UIKit
 
@@ -62,8 +62,6 @@ class TranslateViewController: UIViewController {
             }
         }
     }
-    
-
     
     override func viewDidAppear(_ animated: Bool) {
         playAudio(ID: ID)
