@@ -147,6 +147,26 @@ class ListMusic {
         return string
     }
     
+    func getOneMp3DatabaseInital(name: String) -> DatabaseInital {
+         let data = DatabaseInital()
+        let arr = DatabaseManager.shareInstance.arrDB
+        if let index = arr!.first(where: { (item) -> Bool in
+            item.name == name
+        }) {
+           
+            data.url = index.url
+            data.name = index.name
+            data.text = index.text
+            data.audio = index.audio
+            return data
+        }else {
+            return data
+            print("k co du lieu id")
+        }
+        
+       
+    }
+    
 }
 
 

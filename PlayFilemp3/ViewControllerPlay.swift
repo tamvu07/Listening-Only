@@ -12,6 +12,7 @@ import ReSwift
 
 
 
+@available(iOS 10.0, *)
 class ViewControllerPlay: UIViewController, StoreSubscriber {
     
     typealias StoreSubscriberStateType = AppState
@@ -341,6 +342,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
 //    }
 }
 
+@available(iOS 10.0, *)
 extension ViewControllerPlay: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         

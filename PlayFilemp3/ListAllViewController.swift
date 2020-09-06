@@ -11,6 +11,8 @@
 
 import UIKit
 
+
+
 class ListAllViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
@@ -23,11 +25,19 @@ class ListAllViewController: UIViewController {
     var arrayAllData: [Mp3] = []
      weak var IDUpdateDelegate: IDProtocol? = nil
     var IDNext:Int?
+    var refresher:UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        guard let url = URL(string: "https://dictionary.cambridge.org/vi/media/english/uk_pron/u/ukd/ukdet/ukdetai018.mp3") else {return}
+        let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+        let downloadTask = urlSession.downloadTask(with: url)
+        downloadTask.resume()
+        
+        
         getListMP3()
-
+        setupRefresherData()
         
         
         tableView.delegate = self
@@ -47,11 +57,59 @@ class ListAllViewController: UIViewController {
         
     }
     
-    func getListMP3() {
-
-
+    func setupRefresherData() {
+        self.refresher = UIRefreshControl()
+        self.refresher.tintColor = UIColor.gray
+        self.refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
+        self.tableView!.addSubview(refresher)
+        tableView.refreshControl = refresher
+    }
+    
+    @objc func loadData() {
+        self.tableView!.refreshControl!.beginRefreshing()
+        fetchData()
+        stopRefresher()
+    }
+    
+    func stopRefresher() {
+        self.tableView!.refreshControl!.endRefreshing()
+    }
+    
+    func fetchData() {
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-
+        
+        do {
+            let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil)
+            let mp3Files = directoryContents.filter{ $0.pathExtension == "mp3" }
+            let mp3FileNames = mp3Files.map{ $0.deletingPathExtension().lastPathComponent }
+            
+            let DB = DatabaseManager.shareInstance.getDataRealmIntial()
+            for i in 0..<mp3FileNames.count {
+                let urlString = "\(mp3Files[i])"
+                let pathURL = URL(string: urlString)!
+                var flagSearch = false
+                
+                for j in 0..<DB.count {
+                    if mp3FileNames[i] == DB[j].name {
+                        flagSearch = true
+                    }
+                }
+                
+                if !flagSearch {
+                    DatabaseManager.shareInstance.addData(url: pathURL.path, name: mp3FileNames[i], text: "", audio: "")
+                    if DatabaseManager.shareInstance.getDataFromDB() == true {
+                        arrayAllData =  ListMusic().getAllData()
+                    }
+                }
+                
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func getListMP3() {
+        let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         do {
             let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil)
             let mp3Files = directoryContents.filter{ $0.pathExtension == "mp3" }
@@ -70,29 +128,32 @@ class ListAllViewController: UIViewController {
                 for i in 0..<mp3FileNames.count {
                     let urlString = "\(mp3Files[i])"
                     let pathURL = URL(string: urlString)!
-                    DatabaseManager.shareInstance.addData(url: pathURL.path, name: mp3FileNames[i], text: "", audio: "")
+                    DatabaseManager.shareInstance.addData(url: pathURL.path, name: mp3FileNames[i], text: "a*b*c*", audio: "1*2*3*")
                 }
                 if DatabaseManager.shareInstance.getDataFromDB() == true {
                     arrayAllData =  ListMusic().getAllData()
                 }
             }else {
                let DB = DatabaseManager.shareInstance.getDataRealmIntial()
-                for i in 0..<mp3FileNames.count {
-                    let urlString = "\(mp3Files[i])"
-                    let pathURL = URL(string: urlString)!
-                    
-                    if DB[i].name == mp3FileNames[i] {
-                        let data = DatabaseInital()
-                        data.url = pathURL.path
-                        data.name = mp3FileNames[i]
-                        data.text = ""
-                        data.audio = ""
-                        DatabaseManager.shareInstance.updateToDB(object: data)
-                    }
-                    if DatabaseManager.shareInstance.getDataFromDB() == true {
-                        arrayAllData =  ListMusic().getAllData()
+                if DB.count == mp3FileNames.count {
+                    for i in 0..<mp3FileNames.count {
+                        let urlString = "\(mp3Files[i])"
+                        let pathURL = URL(string: urlString)!
+                        
+                        if DB[i].name == mp3FileNames[i] {
+                            let data = DatabaseInital()
+                            data.url = pathURL.path
+                            data.name = mp3FileNames[i]
+                            data.text = "abc*dfg*uio*"
+                            data.audio = "123*897*654*"
+                            DatabaseManager.shareInstance.updateToDB(object: data)
+                        }
+                        if DatabaseManager.shareInstance.getDataFromDB() == true {
+                            arrayAllData =  ListMusic().getAllData()
+                        }
                     }
                 }
+
             }
             
             
@@ -149,7 +210,8 @@ class ListAllViewController: UIViewController {
     }
     
 }
- 
+
+
 extension ListAllViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
@@ -171,6 +233,8 @@ extension ListAllViewController: UITableViewDelegate {
 }
 
 
+
+
 extension ListAllViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrayAllData.count
@@ -189,3 +253,27 @@ extension ListAllViewController: UITableViewDataSource {
 
 
 
+extension ListAllViewController: URLSessionDownloadDelegate {
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        
+        guard let url = downloadTask.originalRequest?.url else {
+            return
+        }
+        
+         let docsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let destinationPath = docsPath.appendingPathComponent(url.lastPathComponent)
+        
+        try? FileManager.default.removeItem(at: destinationPath)
+        
+        do {
+            try FileManager.default.copyItem(at: location, to: destinationPath)
+            
+        }catch {
+            print("copy Error : \(error.localizedDescription)")
+        }
+    }
+    
+    
+
+    
+}

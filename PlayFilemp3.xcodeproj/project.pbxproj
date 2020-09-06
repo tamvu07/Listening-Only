@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		17410B9EB7032C3D95215EA2 /* Pods_PlayFilemp3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DB2232F03795222CFE16CD8 /* Pods_PlayFilemp3.framework */; };
+		9393A5F025033180009B5D61 /* cellEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393A5EF25033180009B5D61 /* cellEdit.swift */; };
+		93A29CDE2502F59D00DD9E37 /* HeaderViewText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A29CDC2502F59D00DD9E37 /* HeaderViewText.swift */; };
+		93A29CDF2502F59D00DD9E37 /* HeaderViewText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93A29CDD2502F59D00DD9E37 /* HeaderViewText.xib */; };
 		93A3BE4924F9A5F800B649D7 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3BE4824F9A5F800B649D7 /* extension.swift */; };
 		93A3BE4B24F9BB0800B649D7 /* database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3BE4A24F9BB0800B649D7 /* database.swift */; };
 		E51D6B2324FCED3A00C2FDB7 /* Pulsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D6B2224FCED3A00C2FDB7 /* Pulsing.swift */; };
@@ -32,6 +35,9 @@
 /* Begin PBXFileReference section */
 		095839D14DE5A6306771D8B4 /* Pods-PlayFilemp3.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayFilemp3.release.xcconfig"; path = "Target Support Files/Pods-PlayFilemp3/Pods-PlayFilemp3.release.xcconfig"; sourceTree = "<group>"; };
 		3DB2232F03795222CFE16CD8 /* Pods_PlayFilemp3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlayFilemp3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9393A5EF25033180009B5D61 /* cellEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cellEdit.swift; sourceTree = "<group>"; };
+		93A29CDC2502F59D00DD9E37 /* HeaderViewText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewText.swift; sourceTree = "<group>"; };
+		93A29CDD2502F59D00DD9E37 /* HeaderViewText.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderViewText.xib; sourceTree = "<group>"; };
 		93A3BE4824F9A5F800B649D7 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 		93A3BE4A24F9BB0800B649D7 /* database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = database.swift; sourceTree = "<group>"; };
 		AD3DF12963F04E50ABA3767A /* Pods-PlayFilemp3.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayFilemp3.debug.xcconfig"; path = "Target Support Files/Pods-PlayFilemp3/Pods-PlayFilemp3.debug.xcconfig"; sourceTree = "<group>"; };
@@ -198,6 +204,9 @@
 			children = (
 				E534259C24F8EDC8004F8C0D /* cellListAll.swift */,
 				E5611B2A24F8AEFC00D8D5F6 /* cellTranslate.swift */,
+				93A29CDC2502F59D00DD9E37 /* HeaderViewText.swift */,
+				93A29CDD2502F59D00DD9E37 /* HeaderViewText.xib */,
+				9393A5EF25033180009B5D61 /* cellEdit.swift */,
 			);
 			path = cell;
 			sourceTree = "<group>";
@@ -262,6 +271,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93A29CDF2502F59D00DD9E37 /* HeaderViewText.xib in Resources */,
 				E55EE71424F645C700B28740 /* LaunchScreen.storyboard in Resources */,
 				E55EE71124F645C700B28740 /* Assets.xcassets in Resources */,
 				E55EE70F24F645C100B28740 /* Main.storyboard in Resources */,
@@ -317,10 +327,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93A29CDE2502F59D00DD9E37 /* HeaderViewText.swift in Sources */,
 				E55EE70C24F645C100B28740 /* ViewControllerPlay.swift in Sources */,
 				93A3BE4924F9A5F800B649D7 /* extension.swift in Sources */,
 				E55EE72224F6490000B28740 /* dataMusic.swift in Sources */,
 				E55EE70824F645C100B28740 /* AppDelegate.swift in Sources */,
+				9393A5F025033180009B5D61 /* cellEdit.swift in Sources */,
 				E534259724F8DDA6004F8C0D /* AppState.swift in Sources */,
 				E55EE70A24F645C100B28740 /* SceneDelegate.swift in Sources */,
 				E534259924F8DE15004F8C0D /* Actions.swift in Sources */,
@@ -480,6 +492,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = N4NC8GYX67;
 				INFOPLIST_FILE = PlayFilemp3/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -499,6 +512,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = N4NC8GYX67;
 				INFOPLIST_FILE = PlayFilemp3/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
