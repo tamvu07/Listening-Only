@@ -17,12 +17,32 @@ class cellEdit: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         textViewTranscriptTextOrTime.delegate = self
+        customDoneButtonOnKeyboardTxtPhoneMunber()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
+    }
+    
+    func customDoneButtonOnKeyboardTxtPhoneMunber()
+    {
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        doneToolbar.barStyle = .default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneBtn: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.hideKeyBoardTxtPhoneMunber))
+        doneBtn.tintColor = .black
+        
+        let items = [flexSpace, doneBtn]
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        self.textViewTranscriptTextOrTime.inputAccessoryView = doneToolbar
+    }
+    
+    @objc func hideKeyBoardTxtPhoneMunber() {
+        self.textViewTranscriptTextOrTime.resignFirstResponder()
     }
 
 }
@@ -30,10 +50,15 @@ class cellEdit: UITableViewCell {
 
 extension cellEdit: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-//        let tag = textView.tag
-//        textViewTranscriptTextOrTime.text = textView.text
         let volume:[String: String] = ["Tag": String(textView.tag), "T" : textView.text]
               NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateTextOrTime"), object: nil, userInfo: volume)
         
     }
+    
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        let volume:[String: Bool] = ["K": true]
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "textViewshowKeyBoard"), object: nil, userInfo: volume)
+        return true
+    }
+    
 }

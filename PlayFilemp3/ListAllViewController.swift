@@ -30,15 +30,15 @@ class ListAllViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let url = URL(string: "https://dictionary.cambridge.org/vi/media/english/uk_pron/u/ukd/ukdet/ukdetai018.mp3") else {return}
-        let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-        let downloadTask = urlSession.downloadTask(with: url)
-        downloadTask.resume()
+//        guard let url = URL(string: "https://dictionary.cambridge.org/vi/media/english/uk_pron/u/ukd/ukdet/ukdetai018.mp3") else {return}
+//        let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+//        let downloadTask = urlSession.downloadTask(with: url)
+//        downloadTask.resume()
         
         
         getListMP3()
         setupRefresherData()
-        
+        tableView.reloadData()
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -63,11 +63,14 @@ class ListAllViewController: UIViewController {
         self.refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
         self.tableView!.addSubview(refresher)
         tableView.refreshControl = refresher
+        
+        
     }
     
     @objc func loadData() {
         self.tableView!.refreshControl!.beginRefreshing()
         fetchData()
+        tableView.reloadData()
         stopRefresher()
     }
     
@@ -83,26 +86,85 @@ class ListAllViewController: UIViewController {
             let mp3Files = directoryContents.filter{ $0.pathExtension == "mp3" }
             let mp3FileNames = mp3Files.map{ $0.deletingPathExtension().lastPathComponent }
             
+            // co roi ma xoa, update lai
             let DB = DatabaseManager.shareInstance.getDataRealmIntial()
-            for i in 0..<mp3FileNames.count {
-                let urlString = "\(mp3Files[i])"
-                let pathURL = URL(string: urlString)!
-                var flagSearch = false
-                
-                for j in 0..<DB.count {
-                    if mp3FileNames[i] == DB[j].name {
-                        flagSearch = true
+            let x = DB.count
+            let y = mp3FileNames.count
+            
+            if x > y {
+                for i in 0..<x {
+                    var flagSearch = false
+                    for j in 0..<y {
+                        
+                        if mp3FileNames[j] == DB[i].name {
+                             flagSearch = true
+                        }
+                    }
+                    if !flagSearch {
+                        let data = DatabaseInital()
+                        data.url = DB[i].url
+                        data.name = DB[i].name
+                        data.text = DB[i].text
+                        data.audio = DB[i].audio
+                        DatabaseManager.shareInstance.deleteOneFromDB(object: data)
+                        if DatabaseManager.shareInstance.getDataFromDB() == true {
+                            arrayAllData =  ListMusic().getAllData()
+                        }
                     }
                 }
-                
-                if !flagSearch {
-                    DatabaseManager.shareInstance.addData(url: pathURL.path, name: mp3FileNames[i], text: "", audio: "")
-                    if DatabaseManager.shareInstance.getDataFromDB() == true {
-                        arrayAllData =  ListMusic().getAllData()
+            }else if x < y {
+                for i in 0..<mp3FileNames.count {
+                    let urlString = "\(mp3Files[i])"
+                    let pathURL = URL(string: urlString)!
+                    var flagSearch = false
+
+                    for j in 0..<DB.count {
+                        if mp3FileNames[i] == DB[j].name {
+                            flagSearch = true
+                        }
                     }
+
+                    if !flagSearch {
+                        DatabaseManager.shareInstance.addData(url: pathURL.path, name: mp3FileNames[i], text: "", audio: "")
+                        if DatabaseManager.shareInstance.getDataFromDB() == true {
+                            arrayAllData =  ListMusic().getAllData()
+                        }
+                    }
+
                 }
-                
             }
+            
+            
+
+            if DatabaseManager.shareInstance.getDataFromDB() == true {
+                arrayAllData =  ListMusic().getAllData()
+            }else {
+                arrayAllData = []
+            }
+            
+//            let DB = DatabaseManager.shareInstance.getDataRealmIntial()
+//            for i in 0..<mp3FileNames.count {
+//                let urlString = "\(mp3Files[i])"
+//                let pathURL = URL(string: urlString)!
+//                var flagSearch = false
+//
+//                for j in 0..<DB.count {
+//                    if mp3FileNames[i] == DB[j].name {
+//                        flagSearch = true
+//                    }
+//                }
+//
+//                if !flagSearch {
+//                    DatabaseManager.shareInstance.addData(url: pathURL.path, name: mp3FileNames[i], text: "", audio: "")
+//                    if DatabaseManager.shareInstance.getDataFromDB() == true {
+//                        arrayAllData =  ListMusic().getAllData()
+//                    }
+//                }
+//
+//            }
+            
+            
+            
         } catch {
             print(error)
         }
@@ -134,26 +196,110 @@ class ListAllViewController: UIViewController {
                     arrayAllData =  ListMusic().getAllData()
                 }
             }else {
-               let DB = DatabaseManager.shareInstance.getDataRealmIntial()
-                if DB.count == mp3FileNames.count {
+                
+                //chay may ao
+//               let DB = DatabaseManager.shareInstance.getDataRealmIntial()
+//                if DB.count == mp3FileNames.count {
+//                    for i in 0..<mp3FileNames.count {
+//                        let urlString = "\(mp3Files[i])"
+//                        let pathURL = URL(string: urlString)!
+//
+//                        if DB[i].name == mp3FileNames[i] {
+//                            let data = DatabaseInital()
+//                            data.url = pathURL.path
+//                            data.name = mp3FileNames[i]
+//                            data.text = "abc*dfg*uio*"
+//                            data.audio = "123*897*654*"
+//                            DatabaseManager.shareInstance.updateToDB(object: data)
+//                        }
+//                        if DatabaseManager.shareInstance.getDataFromDB() == true {
+//                            arrayAllData =  ListMusic().getAllData()
+//                        }
+//                    }
+//                }
+                
+//                // co roi, them file moi
+//                let DB = DatabaseManager.shareInstance.getDataRealmIntial()
+//                for i in 0..<mp3FileNames.count {
+//                    let urlString = "\(mp3Files[i])"
+//                    let pathURL = URL(string: urlString)!
+//                    var flagSearch = false
+//
+//                    for j in 0..<DB.count {
+//                        if mp3FileNames[i] == DB[j].name {
+//                            flagSearch = true
+//                        }
+//                    }
+//
+//                    if !flagSearch {
+//                        DatabaseManager.shareInstance.addData(url: pathURL.path, name: mp3FileNames[i], text: "", audio: "")
+//                        if DatabaseManager.shareInstance.getDataFromDB() == true {
+//                            arrayAllData =  ListMusic().getAllData()
+//                        }
+//                    }
+//
+//                }
+//                if DatabaseManager.shareInstance.getDataFromDB() == true {
+//                    arrayAllData =  ListMusic().getAllData()
+//                }
+                
+//                 co roi ma xoa, update lai
+                let DB = DatabaseManager.shareInstance.getDataRealmIntial()
+                let x = DB.count
+                let y = mp3FileNames.count
+
+                if x > y {
+                    for i in 0..<x {
+                        var flagSearch = false
+                        for j in 0..<y {
+
+                            if mp3FileNames[j] == DB[i].name {
+                                 flagSearch = true
+                            }
+                        }
+                        if !flagSearch {
+                            let data = DatabaseInital()
+                            data.url = DB[i].url
+                            data.name = DB[i].name
+                            data.text = DB[i].text
+                            data.audio = DB[i].audio
+                            DatabaseManager.shareInstance.deleteOneFromDB(object: data)
+                            if DatabaseManager.shareInstance.getDataFromDB() == true {
+                                arrayAllData =  ListMusic().getAllData()
+                            }
+                        }
+                    }
+                }else if x < y{
                     for i in 0..<mp3FileNames.count {
                         let urlString = "\(mp3Files[i])"
                         let pathURL = URL(string: urlString)!
-                        
-                        if DB[i].name == mp3FileNames[i] {
-                            let data = DatabaseInital()
-                            data.url = pathURL.path
-                            data.name = mp3FileNames[i]
-                            data.text = "abc*dfg*uio*"
-                            data.audio = "123*897*654*"
-                            DatabaseManager.shareInstance.updateToDB(object: data)
+                        var flagSearch = false
+
+                        for j in 0..<DB.count {
+                            if mp3FileNames[i] == DB[j].name {
+                                flagSearch = true
+                            }
                         }
-                        if DatabaseManager.shareInstance.getDataFromDB() == true {
-                            arrayAllData =  ListMusic().getAllData()
+
+                        if !flagSearch {
+                            DatabaseManager.shareInstance.addData(url: pathURL.path, name: mp3FileNames[i], text: "", audio: "")
+                            if DatabaseManager.shareInstance.getDataFromDB() == true {
+                                arrayAllData =  ListMusic().getAllData()
+                            }
                         }
+
                     }
                 }
+                
+                
 
+                if DatabaseManager.shareInstance.getDataFromDB() == true {
+                    arrayAllData =  ListMusic().getAllData()
+                }else {
+                    arrayAllData = []
+                }
+
+                
             }
             
             
