@@ -74,6 +74,19 @@ class DatabaseManager {
         }
     }
     
+    func deleteOneFromDB(object: DatabaseInital) -> Bool {
+        do {
+            let dataToDelete = database.objects(DatabaseInital.self).filter("name = %@",object.name)
+            try database.write{
+                
+                database.delete(dataToDelete)
+            }
+            return true
+        }catch {
+            return false
+        }
+    }
+    
     func deleteAllFromDB() -> Bool {
         do {
             try database.write{

@@ -4,7 +4,7 @@
 //
 //  Created by Vu Minh Tam on 8/28/20.
 //  Copyright © 2020 Vu Minh Tam. All rights reserved.
-//nhapm develop
+//
 
 import UIKit
 
@@ -48,6 +48,8 @@ class TranslateViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateTextOrTime(_:)), name: NSNotification.Name(rawValue: "updateTextOrTime"), object: nil)
         
+        intialTextViewEdit()
+        
     }
     
 
@@ -86,6 +88,8 @@ class TranslateViewController: UIViewController {
         }
     }
     
+
+    
     func playAudio(ID: Int){
         sentenceOfPhrase = ListMusic().getdataOneMusic(ID: ID)
         textViewTranscriptAll.text = sentenceOfPhrase?.text
@@ -105,6 +109,7 @@ class TranslateViewController: UIViewController {
          txtTextEdidtUpdate = String(OneMp3DatabaseInital!.text)
          txtTimeEdidtUpdate = String(OneMp3DatabaseInital!.audio)
         tableViewEdit.reloadData()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "viewTopHide"), object: nil)
        setView(view: textViewEdit, hidden: false)
        
     }
@@ -117,6 +122,7 @@ class TranslateViewController: UIViewController {
     
     @IBAction func btCancelOnClick(_ sender: Any) {
         textViewEdit.isHidden = true
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "viewTopShow"), object: nil)
     }
     
     @IBAction func btSaveOnClick(_ sender: Any) {
@@ -125,8 +131,6 @@ class TranslateViewController: UIViewController {
               popUp(vct: self,v: viewToast, lb: lbToast, msg: "The End of Text must be character * ", withView: widthViewToast)
             return
         }
-    
-        
         let data = DatabaseInital()
         data.url = OneMp3DatabaseInital?.url as! String
         data.name = OneMp3DatabaseInital?.name as! String
@@ -137,8 +141,16 @@ class TranslateViewController: UIViewController {
         tableViewEdit.reloadData()
         tableViewTranslate.reloadData()
         setView(view: textViewEdit, hidden: true)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "viewTopShow"), object: nil)
     }
     
+    func intialTextViewEdit() {
+        textViewEdit.layer.masksToBounds = true
+         textViewEdit.layer.borderWidth = 1
+         textViewEdit.layer.borderColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+         textViewEdit.layer.cornerRadius = 2
+         textViewEdit.layer.masksToBounds = true
+    }
 }
 
     
@@ -148,7 +160,18 @@ extension TranslateViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var numberOfRowsInSection = 0
         if tableView.tag == 1 {
-            numberOfRowsInSection = sentenceOfPhrase?.phrase.count ?? 0
+            let x = sentenceOfPhrase?.phrase.count ?? 0
+            let y = sentenceOfPhrase?.secondAudio.count ?? 0
+            if x > y {
+                numberOfRowsInSection = x
+            }else if x < y {
+                numberOfRowsInSection = y
+            }else if x == y{
+                numberOfRowsInSection = x
+            }else {
+                numberOfRowsInSection = 0
+            }
+            
         }
         if tableView.tag == 2 {
             numberOfRowsInSection = 1
@@ -164,14 +187,38 @@ extension TranslateViewController: UITableViewDataSource {
         
 
         if tableView.tag == 1 {
+            let x = sentenceOfPhrase?.phrase.count ?? 0
+            let y = sentenceOfPhrase?.secondAudio.count ?? 0
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: "cellTranslate", for: indexPath) as! cellTranslate
             cell.lbNumber.text = String(indexPath.row + 1)
-            cell.lbtextTranslate.text = sentenceOfPhrase?.phrase[indexPath.row]
-            if sentenceOfPhrase?.secondAudio.count != 0 {
-                cell.lbTime.text = sentenceOfPhrase?.secondAudio[indexPath.row]
+            
+            if x > y {
+                cell.lbtextTranslate.text = sentenceOfPhrase?.phrase[indexPath.row]
+                if y != 0 {
+                    if indexPath.row + 1 > y {
+                        cell.lbTime.text = ""
+                    }else {
+                        cell.lbTime.text = sentenceOfPhrase?.secondAudio[indexPath.row]
+                    }
+                    
+                }else {
+                    cell.lbTime.text = ""
+                }
             }else {
-                cell.lbTime.text = ""
+                 cell.lbTime.text = sentenceOfPhrase?.secondAudio[indexPath.row]
+                if x != 0 {
+                    if indexPath.row + 1 > x {
+                        cell.lbtextTranslate.text = ""
+                    }else {
+                        cell.lbtextTranslate.text = sentenceOfPhrase?.phrase[indexPath.row]
+                    }
+                    
+                }else {
+                    cell.lbtextTranslate.text = ""
+                }
             }
+            
             
             
             cell.lbtextTranslate.layer.masksToBounds = true

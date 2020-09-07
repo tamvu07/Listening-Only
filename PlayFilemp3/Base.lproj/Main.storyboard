@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gso-Mj-P86">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gso-Mj-P86">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -473,6 +473,8 @@
                         <outlet property="btPlay0" destination="FwY-Z3-Jad" id="lqU-RB-a5I"/>
                         <outlet property="btPlayMain" destination="Nvx-I7-vst" id="O8E-Vb-wqa"/>
                         <outlet property="constraintBottomViewBottom" destination="rrC-sK-imk" id="2Xs-az-Q5z"/>
+                        <outlet property="constraintBottomViewTranslate" destination="saz-Tc-jW5" id="0se-mq-a75"/>
+                        <outlet property="constraintTopViewTranslate" destination="yAv-VS-918" id="8ec-C9-K8S"/>
                         <outlet property="imagePersonListen" destination="zN8-LN-fTW" id="jwX-oT-9Mg"/>
                         <outlet property="lbEnd" destination="Nf7-oQ-5Oc" id="mYp-UQ-Ltv"/>
                         <outlet property="lbNameMusic" destination="adF-EX-ITs" id="BZq-lI-6rX"/>
@@ -482,7 +484,9 @@
                         <outlet property="sldtime" destination="8A1-Ry-gz8" id="54J-IM-JeQ"/>
                         <outlet property="txtEnd" destination="3x7-nM-Zkj" id="xiw-AK-ZwG"/>
                         <outlet property="txtStart" destination="JYr-O4-Ybs" id="e1P-0p-ENa"/>
+                        <outlet property="viewBottom" destination="tvO-iv-CIu" id="bj0-9g-QZa"/>
                         <outlet property="viewToast" destination="f5C-PE-aCv" id="Oam-Yo-bFT"/>
+                        <outlet property="viewTop" destination="FGA-J6-lsY" id="VyE-8z-41e"/>
                         <outlet property="viewTranslate" destination="bfG-zS-DB6" id="1lr-Ei-hBF"/>
                         <outlet property="widthViewToast" destination="Gh2-ja-mkn" id="ktj-Gu-h2q"/>
                     </connections>
@@ -578,7 +582,6 @@
                                                                 </connections>
                                                             </button>
                                                         </subviews>
-                                                        <color key="backgroundColor" systemColor="systemGray3Color" red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstItem="YRg-tX-ieu" firstAttribute="top" secondItem="4YV-jT-Wbi" secondAttribute="top" id="8rn-yL-HMM"/>
                                                             <constraint firstAttribute="bottom" secondItem="YRg-tX-ieu" secondAttribute="bottom" id="n9D-gZ-i1V"/>
@@ -642,19 +645,19 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lFc-zg-l6o" userLabel="ViewTable">
                                                         <rect key="frame" x="0.0" y="53.5" width="354" height="480.5"/>
                                                         <subviews>
-                                                            <tableView clipsSubviews="YES" tag="2" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="vZO-E4-m1P">
+                                                            <tableView clipsSubviews="YES" tag="2" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="vZO-E4-m1P">
                                                                 <rect key="frame" x="0.0" y="0.0" width="354" height="480.5"/>
-                                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                                 <prototypes>
                                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellEdit" id="qEw-KE-rgh" customClass="cellEdit" customModule="Tam" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="55.5" width="354" height="310.5"/>
+                                                                        <rect key="frame" x="0.0" y="55.5" width="354" height="300"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qEw-KE-rgh" id="IWW-Ah-r81">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="354" height="310.5"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="354" height="300"/>
                                                                             <autoresizingMask key="autoresizingMask"/>
                                                                             <subviews>
                                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Dtq-fz-gjC">
-                                                                                    <rect key="frame" x="5" y="5" width="344" height="300.5"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="354" height="300"/>
                                                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="300" id="bPc-lo-n1f"/>
@@ -666,13 +669,12 @@
                                                                                 </textView>
                                                                             </subviews>
                                                                             <constraints>
-                                                                                <constraint firstItem="Dtq-fz-gjC" firstAttribute="top" secondItem="IWW-Ah-r81" secondAttribute="top" constant="5" id="5Yv-dN-mRm"/>
-                                                                                <constraint firstItem="Dtq-fz-gjC" firstAttribute="leading" secondItem="IWW-Ah-r81" secondAttribute="leading" constant="5" id="LEY-Od-wKV"/>
-                                                                                <constraint firstAttribute="trailing" secondItem="Dtq-fz-gjC" secondAttribute="trailing" constant="5" id="Vm7-hU-JYk"/>
-                                                                                <constraint firstAttribute="bottom" secondItem="Dtq-fz-gjC" secondAttribute="bottom" constant="5" id="my2-XV-ucs"/>
+                                                                                <constraint firstItem="Dtq-fz-gjC" firstAttribute="top" secondItem="IWW-Ah-r81" secondAttribute="top" id="5Yv-dN-mRm"/>
+                                                                                <constraint firstItem="Dtq-fz-gjC" firstAttribute="leading" secondItem="IWW-Ah-r81" secondAttribute="leading" id="LEY-Od-wKV"/>
+                                                                                <constraint firstAttribute="trailing" secondItem="Dtq-fz-gjC" secondAttribute="trailing" id="Vm7-hU-JYk"/>
+                                                                                <constraint firstAttribute="bottom" secondItem="Dtq-fz-gjC" secondAttribute="bottom" id="my2-XV-ucs"/>
                                                                             </constraints>
                                                                         </tableViewCellContentView>
-                                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <connections>
                                                                             <outlet property="contraintsHeightTextView" destination="bPc-lo-n1f" id="u7w-lH-VSd"/>
                                                                             <outlet property="textViewTranscriptTextOrTime" destination="Dtq-fz-gjC" id="9C8-F3-Dbc"/>

@@ -26,6 +26,8 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     @IBOutlet weak var sldtime: UISlider!
     @IBOutlet weak var btPlay0: UIButton!
     @IBOutlet weak var viewTranslate: UIView!
+    @IBOutlet weak var viewTop: UIView!
+    @IBOutlet weak var viewBottom: UIView!
     @IBOutlet weak var lbNameMusic: UILabel!
     @IBOutlet weak var constraintBottomViewBottom: NSLayoutConstraint!
     @IBOutlet weak var pageControl: UIPageControl!
@@ -34,6 +36,11 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     @IBOutlet weak var widthViewToast: NSLayoutConstraint!
     @IBOutlet weak var ViewPersonListen: UIView!
     @IBOutlet weak var imagePersonListen: UIImageView!
+    @IBOutlet weak var constraintBottomViewTranslate: NSLayoutConstraint!
+    
+    @IBOutlet weak var constraintTopViewTranslate: NSLayoutConstraint!
+    
+    
     
     
     
@@ -43,6 +50,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     var y:Int = 0
     var ID:Int?
     var urlMp3: URL?
+    var checkTextFieldOrTextView = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,11 +63,16 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         lbNameMusic.text =  ListMusic().getNameMusic(ID: ID!)
         playAudio()
          callScreenViewTranslateDetail()
+        txtStart.delegate = self
+        txtEnd.delegate = self
        NotificationCenter.default.addObserver(self, selector: #selector(self.updateVolume(_:)), name: NSNotification.Name(rawValue: "updateVolume"), object: nil)
-
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateVolume(_:)), name: NSNotification.Name(rawValue: "textViewshowKeyBoard"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(viewTopHide), name: NSNotification.Name(rawValue: "viewTopHide"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(viewTopShow), name: NSNotification.Name(rawValue: "viewTopShow"), object: nil)
+        
+        
          let recordingSession = AVAudioSession.sharedInstance()
          do {
-             // Set the audio session category, mode, and options.
              try recordingSession.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
              try recordingSession.setActive(true)
          } catch {
@@ -74,8 +87,11 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
 
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "updateVolume"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "textViewshowKeyBoard"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "viewTopHide"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "viewTopShow"), object: nil)
     }
-    
+
     @objc func addPulse() {
         let pulse = Pulsing(numberOfPulses: 1, radius: 60, position: imagePersonListen.center)
         pulse.animationDuration = 0.8
@@ -84,10 +100,27 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     }
     
     @objc func updateVolume(_ notification: NSNotification) {
-
-     if let V = notification.userInfo?["V"] as? Float {
-        player.volume = V
-     }
+        
+        if let V = notification.userInfo?["V"] as? Float {
+            player.volume = V
+        }
+    }
+    
+    @objc func textViewshowKeyBoard(_ notification: NSNotification) {
+        
+        if let K = notification.userInfo?["K"] as? Bool {
+            checkTextFieldOrTextView = K
+        }
+    }
+    
+    @objc func viewTopHide() {
+        viewTop.isHidden = true
+        constraintTopViewTranslate.constant = -viewTop.frame.size.height
+    }
+    
+    @objc func viewTopShow() {
+        viewTop.isHidden = false
+        constraintTopViewTranslate.constant = 10
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -182,7 +215,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         NotificationCenter.default.addObserver( self,
         selector: #selector(handKeyboardNotificationShow(notification:)),
         name: UIResponder.keyboardDidShowNotification, object: nil)
-        
+
         NotificationCenter.default.addObserver( self,
         selector: #selector(handKeyboardNotificationHide(notification:)),
         name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -229,17 +262,32 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
             let frame = userInfo[UIResponder.keyboardFrameEndUserInfoKey]
             let keyBoarRect = frame?.cgRectValue
             if let keyBoardHeight = keyBoarRect?.height {
-                self.constraintBottomViewBottom.constant = -keyBoardHeight
-                viewTranslate.isHidden = true
-                ViewPersonListen.isHidden = false
+                if checkTextFieldOrTextView == false {
+                    self.constraintBottomViewBottom.constant = -keyBoardHeight
+                    viewTranslate.isHidden = true
+                    ViewPersonListen.isHidden = false
+                }else {
+                    constraintBottomViewTranslate.constant = -keyBoardHeight + viewBottom.frame.size.height
+                    viewTranslate.isHidden = false
+                    ViewPersonListen.isHidden = true
+                    
+                }
+
             }
         }
     }
     
     @objc func handKeyboardNotificationHide(notification: Notification){
-        self.constraintBottomViewBottom.constant = 0
-        viewTranslate.isHidden = false
-        ViewPersonListen.isHidden = true
+        if checkTextFieldOrTextView == false {
+            checkTextFieldOrTextView = true
+            self.constraintBottomViewBottom.constant = 0
+            viewTranslate.isHidden = false
+            ViewPersonListen.isHidden = true
+        }else {
+            
+            constraintBottomViewTranslate.constant = 0
+        }
+
     }
     
     @IBAction func btOnClickPlayMain(_ sender: Any) {
@@ -342,7 +390,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
 //    }
 }
 
-@available(iOS 10.0, *)
+
 extension ViewControllerPlay: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         
@@ -354,7 +402,19 @@ extension ViewControllerPlay: AVAudioPlayerDelegate {
     
 }
 
-
+extension ViewControllerPlay: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if textField == txtStart {
+          checkTextFieldOrTextView = false
+        }
+        if textField == txtEnd {
+             checkTextFieldOrTextView = false
+        }
+        return true
+    }
+    
+    
+}
 
     
     
