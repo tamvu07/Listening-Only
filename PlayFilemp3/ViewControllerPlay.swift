@@ -37,12 +37,12 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     @IBOutlet weak var ViewPersonListen: UIView!
     @IBOutlet weak var imagePersonListen: UIImageView!
     @IBOutlet weak var constraintBottomViewTranslate: NSLayoutConstraint!
-    
     @IBOutlet weak var constraintTopViewTranslate: NSLayoutConstraint!
+    @IBOutlet weak var viewHome: UIView!
+    @IBOutlet weak var viewHomeAdd: UIView!
     
-    
-    
-    
+    @IBOutlet weak var tableViewHome: UITableView!
+    @IBOutlet weak var constraintHeightViewHome: NSLayoutConstraint!
     
     var flag0: Bool = false
     var flagMain: Bool = false
@@ -51,18 +51,26 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     var ID:Int?
     var urlMp3: URL?
     var checkTextFieldOrTextView = true
+
+    
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // quan trong nhat : mainStore
         mainStore.subscribe(self)
+        tableViewHome.delegate = self
+        tableViewHome.dataSource = self
+        tableViewHome.tableFooterView = UIView()
         
         initalSlider()
+        initalViewHome()
         initalTextField()
         pageControl.numberOfPages = 3
         lbNameMusic.text =  ListMusic().getNameMusic(ID: ID!)
         playAudio()
-         callScreenViewTranslateDetail()
+//         callScreenViewTranslateDetail()
         txtStart.delegate = self
         txtEnd.delegate = self
        NotificationCenter.default.addObserver(self, selector: #selector(self.updateVolume(_:)), name: NSNotification.Name(rawValue: "updateVolume"), object: nil)
@@ -127,6 +135,11 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         player.stop()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        btPlayMain.isSelected = true
+        player.play()
+        flagMain = true
+    }
     
     func playAudio(){
         
@@ -196,6 +209,30 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         pageControl.currentPage = mainStore.state.counterPageControl
     }
 
+    func initalViewHome() {
+        viewHome.layer.masksToBounds = true
+        viewHome.layer.borderWidth = 1
+        viewHome.layer.borderColor = UIColor.orange.cgColor
+        viewHome.layer.cornerRadius = 5
+        viewHome.layer.masksToBounds = true
+        setLeftTriangle()
+        
+    }
+    
+    func setLeftTriangle(){
+           let heightWidth = viewHomeAdd.frame.size.width
+           let path = CGMutablePath()
+           path.move(to: CGPoint(x: 0, y: 0))
+           path.addLine(to: CGPoint(x:heightWidth/2, y: 0))
+        path.addLine(to: CGPoint(x:heightWidth, y:viewHomeAdd.frame.size.height))
+
+           let shape = CAShapeLayer()
+           shape.path = path
+           shape.fillColor = UIColor.orange.cgColor
+
+           viewHomeAdd.layer.insertSublayer(shape, at: 0)
+       }
+    
     func initalSlider() {
         sldtime.maximumTrackTintColor = .gray
         sldtime.minimumTrackTintColor = .orange
@@ -303,7 +340,6 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
             flagMain = false
         }else {
             btPlayMain.isSelected = true
-            
             player.play()
             flagMain = true
         }
@@ -311,9 +347,9 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     
         @IBAction func btOnClickPlay0(_ sender: Any) {
             
-            if self.flagMain == true {
-                return
-            }
+//            if self.flagMain == true {
+//                return
+//            }
 
             if txtStart.text == "" {
                  popUp(vct: self,v: viewToast, lb: lbToast, msg: "Fill out time start", withView: widthViewToast)
@@ -355,6 +391,8 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
                 player.pause()
                 flag0 = false
             }else {
+                btPlayMain.isSelected = false
+                player.pause()
                 btPlay0.isSelected = true
                 player.play()
                 flag0 = true
@@ -376,18 +414,25 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         navigationController?.popViewController(animated: true)
     }
     
-    func callScreenViewTranslateDetail() {
-        let data = ID
-//        self.performSegue(withIdentifier: "toVCListAllFromVCPlayDetail", sender: data)
+    @IBAction func btHomeOnClick(_ sender: Any) {
+        if viewHome.isHidden == false {
+            viewHome.isHidden = true
+            viewHomeAdd.isHidden = true
+        }else {
+            viewHome.isHidden = false
+            viewHomeAdd.isHidden = false
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            self.viewHome.isHidden = true
+            self.viewHomeAdd.isHidden = true
+        }
+        
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "toVCListAllFromVCPlayDetail" {
-//            if let nextVC  = segue.destination as? TranslateViewController {
-//                nextVC.ID = sender as! Int
-//            }
-//        }
-//    }
+    
+    
+    
 }
 
 
@@ -413,9 +458,34 @@ extension ViewControllerPlay: UITextFieldDelegate {
         return true
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewHome.isHidden = true
+        viewHomeAdd.isHidden  = true
+        self.performSegue(withIdentifier: "toVCListAllFromVCInstruction", sender: self)
+
+    }
+    
     
 }
 
+extension ViewControllerPlay: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        constraintHeightViewHome.constant = 1 * 40
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let cell = tableView.dequeueReusableCell(withIdentifier: "cellHome", for: indexPath) as! cellHome
+        cell.lbName.text = "Instruction"
+        return cell
+    }
     
     
+}
+
+extension ViewControllerPlay: UITableViewDelegate {
+    
+}
+
+
 
