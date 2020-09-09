@@ -126,11 +126,24 @@ class TranslateViewController: UIViewController {
     }
     
     @IBAction func btSaveOnClick(_ sender: Any) {
-        
-        if txtTextEdidtUpdate.last != "*" || txtTimeEdidtUpdate.last != "*" {
-              popUp(vct: self,v: viewToast, lb: lbToast, msg: "The End of Text must be character * ", withView: widthViewToast)
-            return
+        if txtTextEdidtUpdate == "" {
+            txtTextEdidtUpdate = ""
+        }else {
+            if txtTextEdidtUpdate.last != "*" {
+                popUp(vct: self,v: viewToast, lb: lbToast, msg: "The End of text transcript must be character * ", withView: widthViewToast)
+                return
+            }
         }
+        if txtTimeEdidtUpdate == "" {
+            txtTimeEdidtUpdate = ""
+
+        }else {
+            if txtTimeEdidtUpdate.last != "*" {
+                popUp(vct: self,v: viewToast, lb: lbToast, msg: "The End of text time must be character * ", withView: widthViewToast)
+                return
+            }
+        }
+        
         let data = DatabaseInital()
         data.url = OneMp3DatabaseInital?.url as! String
         data.name = OneMp3DatabaseInital?.name as! String
