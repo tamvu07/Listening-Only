@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import ReSwift
 
+import MediaPlayer
 
 
 @available(iOS 10.0, *)
@@ -44,6 +45,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     @IBOutlet weak var tableViewHome: UITableView!
     @IBOutlet weak var constraintHeightViewHome: NSLayoutConstraint!
     
+    
     var flag0: Bool = false
     var flagMain: Bool = false
     var x:Int = 0
@@ -68,9 +70,8 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         initalViewHome()
         initalTextField()
         pageControl.numberOfPages = 3
-        lbNameMusic.text =  ListMusic().getNameMusic(ID: ID!)
-        playAudio()
-//         callScreenViewTranslateDetail()
+        
+        playAudio(id: ID!)
         txtStart.delegate = self
         txtEnd.delegate = self
        NotificationCenter.default.addObserver(self, selector: #selector(self.updateVolume(_:)), name: NSNotification.Name(rawValue: "updateVolume"), object: nil)
@@ -78,18 +79,10 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         NotificationCenter.default.addObserver(self, selector: #selector(viewTopHide), name: NSNotification.Name(rawValue: "viewTopHide"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(viewTopShow), name: NSNotification.Name(rawValue: "viewTopShow"), object: nil)
         
-        
-         let recordingSession = AVAudioSession.sharedInstance()
-         do {
-             try recordingSession.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
-             try recordingSession.setActive(true)
-         } catch {
-             print("Failed to set audio session category.")
-         }
-        
         Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { (time) in
             self.addPulse()
         }
+        setBackgroundPlayAudio()
         
     }
 
@@ -106,6 +99,77 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
          pulse.backgroundColor = #colorLiteral(red: 0.7956557274, green: 0.8827135563, blue: 0.957783401, alpha: 1)
         self.ViewPersonListen.layer.insertSublayer(pulse, below: imagePersonListen.layer)
     }
+    
+    func setBackgroundPlayAudio() {
+        let recordingSession = AVAudioSession.sharedInstance()
+        do {
+            try recordingSession.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
+            try recordingSession.setActive(true)
+          
+        } catch {
+            print("Failed to set audio session category.")
+        }
+        
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.bookmarkCommand.isActive = true
+        commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+          self.audioPlayClicked()
+            self.btPlayMain.isSelected = true
+          return .success
+        }
+        commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+          self.audioPauseClicked()
+            self.btPlayMain.isSelected = false
+          return .success
+        }
+        commandCenter.stopCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+          self.audioStopClicked()
+            self.btPlayMain.isSelected = false
+          return .success
+        }
+        
+        commandCenter.nextTrackCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+          self.playMp3Next()
+          return .success
+        }
+        
+        commandCenter.previousTrackCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+          self.playMp3Previous()
+          return .success
+        }
+    }
+    
+    func setupNowPlaying(player: AVAudioPlayer, title: String, timeCurrent: Float, duration: Float) {
+        // Define Now Playing Info
+        var nowPlayingInfo = [String : Any]()
+        nowPlayingInfo[MPMediaItemPropertyTitle] = title
+
+        if let image = UIImage(named: "LOGO") {
+            nowPlayingInfo[MPMediaItemPropertyArtwork] =
+                MPMediaItemArtwork(boundsSize: image.size) { size in
+                    return image
+            }
+        }
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = timeCurrent
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = player.rate
+
+        // Set the metadata
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+    
+    func audioPlayClicked() {
+        player.play()
+    }
+    
+    func audioPauseClicked() {
+        player.pause()
+    }
+    
+    func audioStopClicked() {
+        player.stop()
+    }
+
     
     @objc func updateVolume(_ notification: NSNotification) {
         
@@ -124,11 +188,23 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     @objc func viewTopHide() {
         viewTop.isHidden = true
         constraintTopViewTranslate.constant = -viewTop.frame.size.height
+        viewTranslate.layer.masksToBounds = false
+        viewTranslate.layer.borderWidth = 0
+        viewTranslate.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        viewTranslate.layer.cornerRadius = 0
+        viewTranslate.layer.masksToBounds = false
+        pageControl.isHidden = true
     }
     
     @objc func viewTopShow() {
         viewTop.isHidden = false
         constraintTopViewTranslate.constant = 10
+        viewTranslate.layer.masksToBounds = true
+        viewTranslate.layer.borderWidth = 1
+        viewTranslate.layer.borderColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+        viewTranslate.layer.cornerRadius = 10
+        viewTranslate.layer.masksToBounds = true
+        pageControl.isHidden = false
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -141,9 +217,10 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         flagMain = true
     }
     
-    func playAudio(){
-        
-        let sentenceOfPhrase = ListMusic().getdataOneMusic(ID: ID!)
+    func playAudio(id: Int){
+        ID = id
+        lbNameMusic.text =  ListMusic().getNameMusic(ID: id)
+        let sentenceOfPhrase = ListMusic().getdataOneMusic(ID: id)
         
 //        let path:String = Bundle.main.path(forResource: sentenceOfPhrase.name, ofType: ".mp3")!
 //                let url:URL = URL(fileURLWithPath: path)
@@ -165,10 +242,6 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
 //        } catch {
 //            print(error)
 //        }
-        
-        
-
-        
         
         urlMp3 =  URL(fileURLWithPath: sentenceOfPhrase.url!)
         
@@ -197,8 +270,18 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
                         }
                         self.sldtime.value = Float(self.player.currentTime)
                         self.lbStart.text = String(Int(self.player.currentTime))
+                        
+                        // set time for background
+                        self.setupNowPlaying(player: self.player, title: ListMusic().getNameMusic(ID: id), timeCurrent: Float(self.player.currentTime), duration: Float(self.player.duration))
+                        
                     }
                     player.volume = 0.5
+                    
+                    // set background play aoudio
+                    var audioSession = AVAudioSession.sharedInstance()
+                    do {
+                        try audioSession.setCategory(AVAudioSession.Category.playback)
+                    }
                 }catch {
                     print("error player !!!")
                 }
@@ -241,7 +324,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         viewTranslate.layer.masksToBounds = true
         viewTranslate.layer.borderWidth = 1
         viewTranslate.layer.borderColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
-        viewTranslate.layer.cornerRadius = 2
+        viewTranslate.layer.cornerRadius = 10
         viewTranslate.layer.masksToBounds = true
     }
     
@@ -430,7 +513,42 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         
     }
     
+    @IBAction func btPreviousOnClick(_ sender: Any) {
+        playMp3Previous()
+    }
     
+    @IBAction func btNextOnClick(_ sender: Any) {
+        playMp3Next()
+    }
+    
+    func playMp3Previous() {
+        if ID! > 1 {
+            player.stop()
+            btPlay0.isSelected = false
+            flag0 = false
+            self.btPlayMain.isSelected = false
+            txtStart.text = ""
+            txtEnd.text = ""
+            playAudio(id: ID! - 1)
+            player.play()
+            self.btPlayMain.isSelected = true
+        }
+    }
+    
+    func playMp3Next() {
+        let countArray =  ListMusic().getAllData().count
+        if ID! < countArray {
+            player.stop()
+            btPlay0.isSelected = false
+            flag0 = false
+            self.btPlayMain.isSelected = false
+            txtStart.text = ""
+            txtEnd.text = ""
+            playAudio(id: ID! + 1)
+            player.play()
+            self.btPlayMain.isSelected = true
+        }
+    }
     
     
 }
@@ -457,15 +575,6 @@ extension ViewControllerPlay: UITextFieldDelegate {
         }
         return true
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewHome.isHidden = true
-        viewHomeAdd.isHidden  = true
-        self.performSegue(withIdentifier: "toVCListAllFromVCInstruction", sender: self)
-
-    }
-    
-    
 }
 
 extension ViewControllerPlay: UITableViewDataSource {
@@ -484,7 +593,12 @@ extension ViewControllerPlay: UITableViewDataSource {
 }
 
 extension ViewControllerPlay: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewHome.isHidden = true
+        viewHomeAdd.isHidden  = true
+        self.performSegue(withIdentifier: "toVCListAllFromVCInstruction", sender: self)
+
+    }
 }
 
 
