@@ -25,6 +25,7 @@ class TranslateViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     var ID:Int = 0
     var sentenceOfPhrase: SentenceOfPhrase?
+    var arrOnePhrase: [OnePhrase] = []
     var OneMp3DatabaseInital: DatabaseInital?
     var txtTextEdidtUpdate = ""
     var txtTimeEdidtUpdate = ""
@@ -47,7 +48,7 @@ class TranslateViewController: UIViewController {
         tableViewEdit.tableFooterView = UIView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateTextOrTime(_:)), name: NSNotification.Name(rawValue: "updateTextOrTime"), object: nil)
-        
+               NotificationCenter.default.addObserver(self, selector: #selector(self.updateButtomTranscript(_:)), name: NSNotification.Name(rawValue: "updateButtomTranscript"), object: nil)
         intialTextViewEdit()
         
     }
@@ -74,6 +75,7 @@ class TranslateViewController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "updateTextOrTime"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "updateButtomTranscript"), object: nil)
     }
     
     @objc func updateTextOrTime(_ notification: NSNotification) {
@@ -88,10 +90,18 @@ class TranslateViewController: UIViewController {
         }
     }
     
+    @objc func updateButtomTranscript(_ notification: NSNotification) {
+       
+        if let T = notification.userInfo?["Tag"] as? Int {
+            arrOnePhrase = ListMusic().updateValueOnePhrase(arr: arrOnePhrase, row: T)
+             tableViewTranslate.reloadData()
+        }
+    }
 
     
     func playAudio(ID: Int){
         sentenceOfPhrase = ListMusic().getdataOneMusic(ID: ID)
+        arrOnePhrase = ListMusic().setValueOnePhrase(arr: sentenceOfPhrase!.phrase)
         textViewTranscriptAll.text = sentenceOfPhrase?.text
         tableViewEdit.reloadData()
         tableViewTranslate.reloadData()
@@ -111,7 +121,7 @@ class TranslateViewController: UIViewController {
         tableViewEdit.reloadData()
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "viewTopHide"), object: nil)
        setView(view: textViewEdit, hidden: false)
-       
+        scrollView.isScrollEnabled = false
     }
     
     func setView(view: UIView, hidden: Bool) {
@@ -123,6 +133,8 @@ class TranslateViewController: UIViewController {
     @IBAction func btCancelOnClick(_ sender: Any) {
         textViewEdit.isHidden = true
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "viewTopShow"), object: nil)
+        scrollView.isScrollEnabled = true
+        tableViewEdit.reloadData()
     }
     
     @IBAction func btSaveOnClick(_ sender: Any) {
@@ -150,19 +162,24 @@ class TranslateViewController: UIViewController {
         data.text = txtTextEdidtUpdate
         data.audio = txtTimeEdidtUpdate
         DatabaseManager.shareInstance.updateToDB(object: data)
+        var arr1 = arrOnePhrase
         playAudio(ID: ID)
+        var arr2 = arrOnePhrase
+       arrOnePhrase = ListMusic().updateStatusOnePhrase(arr1: arr1, arr2: arr2)
         tableViewEdit.reloadData()
         tableViewTranslate.reloadData()
         setView(view: textViewEdit, hidden: true)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "viewTopShow"), object: nil)
+        scrollView.isScrollEnabled = true
     }
     
     func intialTextViewEdit() {
         textViewEdit.layer.masksToBounds = true
          textViewEdit.layer.borderWidth = 1
          textViewEdit.layer.borderColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
-         textViewEdit.layer.cornerRadius = 2
+         textViewEdit.layer.cornerRadius = 5
          textViewEdit.layer.masksToBounds = true
+        
     }
 }
 
@@ -178,27 +195,20 @@ extension TranslateViewController: UITableViewDataSource {
             if x > y {
                 numberOfRowsInSection = x
             }else if x < y {
-                numberOfRowsInSection = y
+                numberOfRowsInSection = x
             }else if x == y{
                 numberOfRowsInSection = x
             }else {
                 numberOfRowsInSection = 0
             }
-            
         }
         if tableView.tag == 2 {
             numberOfRowsInSection = 1
         }
-
-
         return numberOfRowsInSection
-       
-   
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-
         if tableView.tag == 1 {
             let x = sentenceOfPhrase?.phrase.count ?? 0
             let y = sentenceOfPhrase?.secondAudio.count ?? 0
@@ -206,40 +216,47 @@ extension TranslateViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cellTranslate", for: indexPath) as! cellTranslate
             cell.lbNumber.text = String(indexPath.row + 1)
             
-            if x > y {
-                cell.lbtextTranslate.text = sentenceOfPhrase?.phrase[indexPath.row]
+            if x > y || x == y{
+//                cell.lbtextTranslate.text = sentenceOfPhrase?.phrase[indexPath.row]
+                cell.lbtextTranslate.text = arrOnePhrase[indexPath.row].transcript
                 if y != 0 {
                     if indexPath.row + 1 > y {
                         cell.lbTime.text = ""
                     }else {
                         cell.lbTime.text = sentenceOfPhrase?.secondAudio[indexPath.row]
                     }
-                    
                 }else {
                     cell.lbTime.text = ""
                 }
-            }else {
+            }else if y > x {
                  cell.lbTime.text = sentenceOfPhrase?.secondAudio[indexPath.row]
                 if x != 0 {
                     if indexPath.row + 1 > x {
                         cell.lbtextTranslate.text = ""
                     }else {
-                        cell.lbtextTranslate.text = sentenceOfPhrase?.phrase[indexPath.row]
+//                        cell.lbtextTranslate.text = sentenceOfPhrase?.phrase[indexPath.row]
+                        cell.lbtextTranslate.text = arrOnePhrase[indexPath.row].transcript
                     }
                     
                 }else {
                     cell.lbtextTranslate.text = ""
                 }
             }
-            
-            
-            
             cell.lbtextTranslate.layer.masksToBounds = true
             cell.viewLbTranslate.layer.backgroundColor = UIColor.white.cgColor
             cell.viewLbTranslate.layer.borderWidth = 1
             cell.viewLbTranslate.layer.borderColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
             cell.viewLbTranslate.layer.cornerRadius = 4
             cell.viewLbTranslate.layer.masksToBounds = true
+            cell.btOpen.tag = indexPath.row
+            if arrOnePhrase[indexPath.row].flag! {
+                cell.viewHideViewTranslate.isHidden = true
+                cell.imageEye.image = UIImage(named: "eyeOpen")
+            }else {
+                cell.imageEye.image = UIImage(named: "eyeClose")
+                cell.viewHideViewTranslate.isHidden = false
+            }
+            
             return cell
         }
         

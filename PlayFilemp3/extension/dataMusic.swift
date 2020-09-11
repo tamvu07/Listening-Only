@@ -36,6 +36,10 @@ struct SentenceOfPhrase {
     var secondAudio:[String]
 }
 
+struct OnePhrase {
+    var transcript: String?
+    var flag: Bool?
+}
 
 class DatabaseInital: Object {
     @objc dynamic var url: String = ""

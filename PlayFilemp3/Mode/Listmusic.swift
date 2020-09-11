@@ -167,6 +167,48 @@ class ListMusic {
        
     }
     
+    func setValueOnePhrase(arr: [String]) -> [OnePhrase] {
+        var data: [OnePhrase] = []
+        for i in 0..<arr.count {
+            let phrase = OnePhrase.init(transcript: arr[i], flag: false)
+            data.append(phrase)
+        }
+        return data
+    }
+    
+    func updateValueOnePhrase(arr: [OnePhrase], row: Int) -> [OnePhrase] {
+        var data: [OnePhrase] = arr
+        for i in 0..<arr.count {
+            if i == row {
+                if data[i].flag == true {
+                    data[i].flag = false
+                }else {
+                    data[i].flag = true
+                }
+            }
+        }
+        return data
+    }
+    
+    func updateStatusOnePhrase(arr1: [OnePhrase], arr2: [OnePhrase]) -> [OnePhrase] {
+        var data: [OnePhrase] = arr2
+        let x = arr1.count
+        let y = arr2.count
+        var n = 0
+        if x < y {
+            n = x
+        }else {
+            n = y
+        }
+        
+        for i in 0..<n {
+            if arr1[i].flag == true {
+                data[i].flag = true
+            }
+        }
+        return data
+    }
+    
 }
 
 

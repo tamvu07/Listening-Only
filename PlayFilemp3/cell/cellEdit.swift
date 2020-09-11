@@ -18,6 +18,7 @@ class cellEdit: UITableViewCell {
         super.awakeFromNib()
         textViewTranscriptTextOrTime.delegate = self
         customDoneButtonOnKeyboardTxtPhoneMunber()
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
