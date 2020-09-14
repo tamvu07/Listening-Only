@@ -245,14 +245,13 @@ class ListAllViewController: UIViewController {
 
                     }
                 }
-
-
-
                 if DatabaseManager.shareInstance.getDataFromDB() == true {
                     arrayAllData =  ListMusic().getAllData()
                 }else {
                     arrayAllData = []
                 }
+
+
 
             // ............
             }

@@ -48,8 +48,9 @@ class TranslateViewController: UIViewController {
         tableViewEdit.tableFooterView = UIView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateTextOrTime(_:)), name: NSNotification.Name(rawValue: "updateTextOrTime"), object: nil)
-               NotificationCenter.default.addObserver(self, selector: #selector(self.updateButtomTranscript(_:)), name: NSNotification.Name(rawValue: "updateButtomTranscript"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateButtomTranscript(_:)), name: NSNotification.Name(rawValue: "updateButtomTranscript"), object: nil)
         intialTextViewEdit()
+               NotificationCenter.default.addObserver(self, selector: #selector(self.nextOrBackMP3(_:)), name: NSNotification.Name(rawValue: "nextOrBackMP3"), object: nil)
         
     }
     
@@ -76,6 +77,7 @@ class TranslateViewController: UIViewController {
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "updateTextOrTime"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "updateButtomTranscript"), object: nil)
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "nextOrBackMP3"), object: nil)
     }
     
     @objc func updateTextOrTime(_ notification: NSNotification) {
@@ -95,6 +97,11 @@ class TranslateViewController: UIViewController {
         if let T = notification.userInfo?["Tag"] as? Int {
             arrOnePhrase = ListMusic().updateValueOnePhrase(arr: arrOnePhrase, row: T)
              tableViewTranslate.reloadData()
+        }
+    }
+    @objc func nextOrBackMP3(_ notification: NSNotification) {
+        if let id = notification.userInfo?["id"] as? Int {
+            playAudio(ID: id)
         }
     }
 

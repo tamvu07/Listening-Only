@@ -530,6 +530,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
             txtStart.text = ""
             txtEnd.text = ""
             playAudio(id: ID! - 1)
+            updateContentNextOrBackMP3(id: ID!)
             player.play()
             self.btPlayMain.isSelected = true
         }
@@ -545,9 +546,17 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
             txtStart.text = ""
             txtEnd.text = ""
             playAudio(id: ID! + 1)
+            updateContentNextOrBackMP3(id: ID!)
             player.play()
             self.btPlayMain.isSelected = true
         }
+
+
+    }
+    
+    func updateContentNextOrBackMP3(id: Int) {
+        let id:[String: Int] = ["id": ID!]
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "nextOrBackMP3"), object: nil, userInfo: id)
     }
     
     
