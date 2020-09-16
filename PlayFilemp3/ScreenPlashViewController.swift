@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+
 class ScreenPlashViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -17,7 +19,7 @@ class ScreenPlashViewController: UIViewController {
 //        // https://dictionary.cambridge.org/vi/media/english/uk_pron/u/uki/uking/ukingra015.mp3
 //        //https://dictionary.cambridge.org/vi/media/english/uk_pron/u/ukm/ukmes/ukmesh_001.mp3
         
-//        guard let url = URL(string: "https://dictionary.cambridge.org/vi/media/english/uk_pron/u/ukf/ukfau/ukfault029.mp3") else {return}
+//        guard let url = URL(string: "https://aredir.nixcdn.com/NhacCuaTui936/ConDuongXuaEmDi-ThanhTuyen-2434528.mp3?st=V12mTaHeZSOk3LsvSlOHeA&e=1600308157") else {return}
 //        let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
 //        let downloadTask = urlSession.downloadTask(with: url)
 //        downloadTask.resume()

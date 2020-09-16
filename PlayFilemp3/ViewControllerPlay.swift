@@ -26,6 +26,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     @IBOutlet weak var btPlayMain: UIButton!
     @IBOutlet weak var sldtime: UISlider!
     @IBOutlet weak var btPlay0: UIButton!
+    @IBOutlet weak var btPlayHome: UIButton!
     @IBOutlet weak var viewTranslate: UIView!
     @IBOutlet weak var viewTop: UIView!
     @IBOutlet weak var viewBottom: UIView!
@@ -44,7 +45,8 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     
     @IBOutlet weak var tableViewHome: UITableView!
     @IBOutlet weak var constraintHeightViewHome: NSLayoutConstraint!
-    
+    @IBOutlet weak var ViewHomeAudio: UIView!
+    @IBOutlet weak var ViewBackgroundOfViewHomeAudio: UIView!
     
     var flag0: Bool = false
     var flagMain: Bool = false
@@ -53,8 +55,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
     var ID:Int?
     var urlMp3: URL?
     var checkTextFieldOrTextView = true
-
-    
+    var flagCheckHomeAudio = true
     
 
     
@@ -69,6 +70,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         initalSlider()
         initalViewHome()
         initalTextField()
+        initalViewHomeAudio()
         pageControl.numberOfPages = 3
         
         playAudio(id: ID!)
@@ -266,6 +268,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
                                 self.player.stop()
                                 self.flag0 = false
                                 self.btPlay0.isSelected = false
+                                self.btPlayHome.isSelected = false
                             }
                         }
                         self.sldtime.value = Float(self.player.currentTime)
@@ -354,6 +357,17 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         
     }
 
+    func initalViewHomeAudio() {
+        ViewHomeAudio.contentMode = .scaleAspectFill
+        ViewHomeAudio.translatesAutoresizingMaskIntoConstraints = false
+        ViewHomeAudio.clipsToBounds = true
+        ViewHomeAudio.layer.cornerRadius = 38
+        ViewHomeAudio.isUserInteractionEnabled = true
+        ViewBackgroundOfViewHomeAudio.translatesAutoresizingMaskIntoConstraints = false
+        ViewBackgroundOfViewHomeAudio.backgroundColor = UIColor.lightGray.withAlphaComponent(0.6)
+        ViewBackgroundOfViewHomeAudio.isUserInteractionEnabled = false
+    }
+    
     func customDoneButtonOnKeyboardTxtPhoneMunber()
     {
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
@@ -471,12 +485,14 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
             
             if btPlay0.isSelected {
                 btPlay0.isSelected = false
+                btPlayHome.isSelected = false
                 player.pause()
                 flag0 = false
             }else {
                 btPlayMain.isSelected = false
                 player.pause()
                 btPlay0.isSelected = true
+                btPlayHome.isSelected = true
                 player.play()
                 flag0 = true
                 x = x1
@@ -506,7 +522,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
             viewHomeAdd.isHidden = false
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
             self.viewHome.isHidden = true
             self.viewHomeAdd.isHidden = true
         }
@@ -525,6 +541,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         if ID! > 1 {
             player.stop()
             btPlay0.isSelected = false
+            btPlayHome.isSelected = false
             flag0 = false
             self.btPlayMain.isSelected = false
             txtStart.text = ""
@@ -541,6 +558,7 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
         if ID! < countArray {
             player.stop()
             btPlay0.isSelected = false
+            btPlayHome.isSelected = false
             flag0 = false
             self.btPlayMain.isSelected = false
             txtStart.text = ""
@@ -553,6 +571,47 @@ class ViewControllerPlay: UIViewController, StoreSubscriber {
 
 
     }
+    
+    // buttom home audio
+    @IBAction func panGestureHome(_ gesture: UIPanGestureRecognizer) {
+                if gesture.state == .began {
+            print("began")
+        } else if gesture.state == .changed {
+            let translation = gesture.translation(in: self.view)
+            gesture.view?.transform = (gesture.view?.transform.translatedBy(x: translation.x, y: translation.y)) as! CGAffineTransform
+            gesture.setTranslation(CGPoint.zero, in: view)
+            print(".....\(gesture.location(in: view))")
+
+        } else if gesture.state == .ended {
+             let translation = gesture.translation(in: self.view)
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                // set position left
+                if gesture.location(in: self.view).x < 100 {
+                    let y = gesture.location(in: self.view).y
+                    self.ViewHomeAudio.transform = CGAffineTransform(translationX: -self.view.frame.size.width/2 + 50, y: y - self.view.frame.size.height/2)
+                }
+                // set position right
+                if gesture.location(in: self.view).x > self.view.frame.size.width - 100 {
+                    let y = gesture.location(in: self.view).y
+                    self.ViewHomeAudio.transform = CGAffineTransform(translationX: self.view.frame.size.width/2 - 50, y: y - self.view.frame.size.height/2)
+                }
+                // set position top
+                if gesture.location(in: self.view).y < 100 {
+                    let x = gesture.location(in: self.view).x
+                    self.ViewHomeAudio.transform = CGAffineTransform(translationX: x - self.view.frame.size.width/2, y: -self.view.frame.size.height/2 + 50)
+                }
+                // set position bottom
+                if gesture.location(in: self.view).y > self.view.frame.size.height - 100 {
+                    let x = gesture.location(in: self.view).x
+                    self.ViewHomeAudio.transform = CGAffineTransform(translationX: x - self.view.frame.size.width/2, y: self.view.frame.size.height/2 - 50)
+                }
+                
+            }, completion: nil)
+            print("end")
+        }
+    }
+    
+    
     
     func updateContentNextOrBackMP3(id: Int) {
         let id:[String: Int] = ["id": ID!]
@@ -588,13 +647,23 @@ extension ViewControllerPlay: UITextFieldDelegate {
 
 extension ViewControllerPlay: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        constraintHeightViewHome.constant = 1 * 40
-        return 1
+        constraintHeightViewHome.constant = 2 * 40
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          let cell = tableView.dequeueReusableCell(withIdentifier: "cellHome", for: indexPath) as! cellHome
-        cell.lbName.text = "Instruction"
+        if indexPath.row == 0 {
+             cell.lbName.text = "Instruction"
+        }
+       if indexPath.row == 1 {
+        if flagCheckHomeAudio {
+            cell.lbName.text = "Home Audio"
+        } else {
+            cell.lbName.text = "Hide Home Audio"
+        }
+            
+       }
         return cell
     }
     
@@ -605,8 +674,22 @@ extension ViewControllerPlay: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewHome.isHidden = true
         viewHomeAdd.isHidden  = true
-        self.performSegue(withIdentifier: "toVCListAllFromVCInstruction", sender: self)
+        
+         if indexPath.row == 0 {
+             self.performSegue(withIdentifier: "toVCListAllFromVCInstruction", sender: self)
+         }
+        if indexPath.row == 1 {
+            if flagCheckHomeAudio {
+                ViewHomeAudio.isHidden = false
+                flagCheckHomeAudio = false
+               
+            } else {
+                ViewHomeAudio.isHidden = true
+                flagCheckHomeAudio = true
+            }
+             tableView.reloadData()
 
+        }
     }
 }
 
