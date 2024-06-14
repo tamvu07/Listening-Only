@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -513,14 +513,14 @@
 				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				"CODE_SIGN_STYLE[sdk=*]" = Automatic;
-				DEVELOPMENT_TEAM = L6Q75WMD9J;
+				DEVELOPMENT_TEAM = JLPE5BL6NP;
 				INFOPLIST_FILE = PlayFilemp3/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = abcabc.PlayFilemp3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onskyheath.skycare;
 				PRODUCT_NAME = "Listening Only";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
@@ -537,14 +537,14 @@
 				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				"CODE_SIGN_STYLE[sdk=*]" = Automatic;
-				DEVELOPMENT_TEAM = L6Q75WMD9J;
+				DEVELOPMENT_TEAM = JLPE5BL6NP;
 				INFOPLIST_FILE = PlayFilemp3/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = abcabc.PlayFilemp3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onskyheath.skycare;
 				PRODUCT_NAME = "Listening Only";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
